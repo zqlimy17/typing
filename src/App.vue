@@ -3,8 +3,8 @@
 {{ timeLimit }}
 <button v-on:click="setCountdown">setCountdown</button>
 {{ countdown }}
-<Menu :newText="newText" :setCurrentTextStack="setCurrentTextStack" />
-<Typing v-bind:currentText="currentText" />
+<Menu :newGame="newGame" />
+<Typing :currentText="currentText" :gameActive="gameActive" :textStack="textStack" @inputchange="handleUserInput" />
 </template>
 
 <script>
@@ -22,11 +22,13 @@ export default {
         return {
             allText,
             currentText: "",
-            currentTextStack: [],
-            currentWord: "",
+            textStack: [],
+            userInput: "",
             countdown: 0,
             timeLimit: 0,
             wpm: 0,
+            field: "",
+            gameActive: false,
         };
     },
     mounted() {
@@ -39,21 +41,29 @@ export default {
                 allText[Math.floor(Math.random() * allText.length)];
             console.log("Number of characters: " + this.currentText.length);
         },
-        newGame() {},
+        async newGame() {
+            await this.newText();
+            await this.setTextStack();
+            await this.setCountdown();
+        },
         setWpm() {},
-        setCurrentTextStack() {
+        setTextStack() {
             console.log("Creating Text Stack");
             this.currentText !== "" ?
-                (this.currentTextStack = this.currentText.split(" ")) :
-                (this.currentTextStack = []);
-            console.log(this.currentTextStack);
-            console.log("Number of words: " + this.currentTextStack.length);
+                (this.textStack = this.currentText
+                    .split(/(\S+\s+)/)
+                    .filter(function (n) {
+                        return n;
+                    })) :
+                (this.textStack = []);
+            console.log(this.textStack);
+            console.log("Number of words: " + this.textStack.length);
         },
         setCountdown() {
             this.countdown = 3;
             const that = this;
             let countdown = setInterval(function () {
-                console.log(that.timeLimit);
+                console.log(that.countdown);
                 that.countdown -= 1;
                 if (that.countdown <= 0) {
                     clearInterval(countdown);
@@ -63,16 +73,34 @@ export default {
         },
         setTimer() {
             console.log("Timer Started");
+            this.gameActive = true;
             this.timeLimit = Math.ceil(this.currentText.length / 3);
             console.log("Time Limit:" + this.timeLimit);
             const that = this;
             let timer = setInterval(function () {
-                console.log(that.timeLimit);
+                console.log(that.userInput);
                 that.timeLimit -= 1;
                 if (that.timeLimit <= 0) {
                     clearInterval(timer);
+                    that.gameActive = false;
                 }
             }, 1000);
+        },
+        handleUserInput(newVal) {
+            this.userInput = newVal;
+        },
+    },
+    watch: {
+        userInput: {
+            handler: function () {
+                console.log(this.userInput);
+                console.log(this.textStack[0]);
+                if (this.userInput === this.textStack[0]) {
+                    this.userInput = "";
+                    this.textStack.shift();
+                }
+            },
+            immediate: true,
         },
     },
 };

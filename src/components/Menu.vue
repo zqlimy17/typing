@@ -1,17 +1,13 @@
 <template>
 <div>Menu</div>
-<button v-on:click="newText">New Text</button>
-<button v-on:click="setCurrentTextStack">setCurrentTextStack</button>
+<button v-on:click="newGame">New Text</button>
 </template>
 
 <script>
 export default {
     name: "Menu",
     props: {
-        newText: {
-            type: Function,
-        },
-        setCurrentTextStack: {
+        newGame: {
             type: Function,
         },
     },
