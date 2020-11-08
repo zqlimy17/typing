@@ -1,5 +1,5 @@
 <template>
-<Menu :newText="newText" />
+<Menu :newText="newText" :splitSentence="splitSentence" />
 <Typing v-bind:currentText="currentText" />
 </template>
 
@@ -18,6 +18,9 @@ export default {
         return {
             allText,
             currentText: "",
+            currentTextSplit: [],
+            currentWord: "",
+            currentTime: 0,
         };
     },
     mounted() {
@@ -29,6 +32,15 @@ export default {
             this.currentText =
                 allText[Math.floor(Math.random() * allText.length)];
             console.log(this.currentText);
+        },
+        newGame() {},
+        wpm() {},
+        splitSentence() {
+            console.log("Splitting Text");
+            this.currentText !== "" ?
+                (this.currentTextSplit = this.currentText.split(" ")) :
+                (this.currentTextSplit = []);
+            console.log(this.currentTextSplit);
         },
     },
 };
