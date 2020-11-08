@@ -1,7 +1,7 @@
 <template>
 <div>Menu</div>
 <button v-on:click="newText">New Text</button>
-<button v-on:click="splitSentence">splitSentence</button>
+<button v-on:click="setCurrentTextStack">setCurrentTextStack</button>
 </template>
 
 <script>
@@ -11,7 +11,7 @@ export default {
         newText: {
             type: Function,
         },
-        splitSentence: {
+        setCurrentTextStack: {
             type: Function,
         },
     },

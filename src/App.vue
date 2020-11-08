@@ -1,5 +1,9 @@
 <template>
-<Menu :newText="newText" :splitSentence="splitSentence" />
+<button v-on:click="setTimer">timer</button>
+{{ timeLimit }}
+<button v-on:click="setCountdown">setCountdown</button>
+{{ countdown }}
+<Menu :newText="newText" :setCurrentTextStack="setCurrentTextStack" />
 <Typing v-bind:currentText="currentText" />
 </template>
 
@@ -18,9 +22,11 @@ export default {
         return {
             allText,
             currentText: "",
-            currentTextSplit: [],
+            currentTextStack: [],
             currentWord: "",
-            currentTime: 0,
+            countdown: 0,
+            timeLimit: 0,
+            wpm: 0,
         };
     },
     mounted() {
@@ -31,16 +37,42 @@ export default {
             console.log("New Text Generated");
             this.currentText =
                 allText[Math.floor(Math.random() * allText.length)];
-            console.log(this.currentText);
+            console.log("Number of characters: " + this.currentText.length);
         },
         newGame() {},
-        wpm() {},
-        splitSentence() {
-            console.log("Splitting Text");
+        setWpm() {},
+        setCurrentTextStack() {
+            console.log("Creating Text Stack");
             this.currentText !== "" ?
-                (this.currentTextSplit = this.currentText.split(" ")) :
-                (this.currentTextSplit = []);
-            console.log(this.currentTextSplit);
+                (this.currentTextStack = this.currentText.split(" ")) :
+                (this.currentTextStack = []);
+            console.log(this.currentTextStack);
+            console.log("Number of words: " + this.currentTextStack.length);
+        },
+        setCountdown() {
+            this.countdown = 3;
+            const that = this;
+            let countdown = setInterval(function () {
+                console.log(that.timeLimit);
+                that.countdown -= 1;
+                if (that.countdown <= 0) {
+                    clearInterval(countdown);
+                    that.setTimer();
+                }
+            }, 1000);
+        },
+        setTimer() {
+            console.log("Timer Started");
+            this.timeLimit = Math.ceil(this.currentText.length / 3);
+            console.log("Time Limit:" + this.timeLimit);
+            const that = this;
+            let timer = setInterval(function () {
+                console.log(that.timeLimit);
+                that.timeLimit -= 1;
+                if (that.timeLimit <= 0) {
+                    clearInterval(timer);
+                }
+            }, 1000);
         },
     },
 };
