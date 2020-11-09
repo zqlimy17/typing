@@ -1,7 +1,6 @@
 <template>
 <div>Typing</div>
 <div id="typing">
-    <p>{{ currentText }}</p>
     <input type="text" :disabled="!gameActive" :placeholder="textStack[0]" v-model="internalValue" />
 </div>
 </template>
@@ -9,8 +8,7 @@
 <script>
 export default {
     name: "Typing",
-
-    props: ["currentText", "gameActive", "textStack", "userInput"],
+    props: ["gameActive", "textStack", "userInput"],
     computed: {
         internalValue: {
             get: function () {

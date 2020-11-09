@@ -4,11 +4,13 @@
 <button v-on:click="setCountdown">setCountdown</button>
 {{ countdown }}
 <Menu :newGame="newGame" />
-<Typing :currentText="currentText" :gameActive="gameActive" :textStack="textStack" @inputchange="handleUserInput" />
+<Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" />
+<Typing :gameActive="gameActive" :textStack="textStack" @inputchange="handleUserInput" />
 </template>
 
 <script>
 import Menu from "./components/Menu.vue";
+import Paragraph from "./components/Paragraph.vue";
 import Typing from "./components/Typing.vue";
 import allText from "./text.json";
 
@@ -16,6 +18,7 @@ export default {
     name: "App",
     components: {
         Menu,
+        Paragraph,
         Typing,
     },
     data() {
@@ -29,6 +32,9 @@ export default {
             wpm: 0,
             field: "",
             gameActive: false,
+            doneWords: "",
+            currentWord: "",
+            upcomingWords: "",
         };
     },
     mounted() {
@@ -61,6 +67,8 @@ export default {
         },
         setCountdown() {
             this.countdown = 3;
+            this.currentWord = this.textStack[0];
+            this.upcomingWords = this.textStack.slice(1).join(" ");
             const that = this;
             let countdown = setInterval(function () {
                 console.log(that.countdown);
@@ -73,8 +81,9 @@ export default {
         },
         setTimer() {
             console.log("Timer Started");
+
             this.gameActive = true;
-            this.timeLimit = Math.ceil(this.currentText.length / 3);
+            this.timeLimit = Math.ceil(this.currentText.length / 2.5);
             console.log("Time Limit:" + this.timeLimit);
             const that = this;
             let timer = setInterval(function () {
@@ -97,7 +106,15 @@ export default {
                 console.log(this.textStack[0]);
                 if (this.userInput === this.textStack[0]) {
                     this.userInput = "";
+                    this.doneWords = this.doneWords.concat(this.textStack[0]);
+                    console.log("this.textStack[0]: " + this.textStack[0]);
                     this.textStack.shift();
+                    console.log("this.doneWords: " + this.doneWords);
+                    this.currentWord = this.textStack[0];
+                    this.upcomingWords = this.textStack.slice(1).join(" ");
+                    if (this.textStack.length <= 0) {
+                        this.gameActive = false;
+                    }
                 }
             },
             immediate: true,
