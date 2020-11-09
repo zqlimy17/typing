@@ -111,6 +111,9 @@ export default {
             },
             immediate: true,
         },
+        gameActive: function () {
+            if (this.gameActive === false) this.timeLimit = 0;
+        },
     },
 };
 </script>

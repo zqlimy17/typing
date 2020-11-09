@@ -44,7 +44,6 @@ export default {
                 this.done = "";
                 this.upcoming = this.word;
             } else if (this.currentWord === undefined) {
-                console.log("Clearing");
                 this.upcoming = "";
                 this.done = "";
             }
@@ -90,6 +89,9 @@ export default {
                     this.wrongDone = this.wrongDone.concat(nextLetter);
                     this.upcoming = this.upcoming.substr(1);
                 }
+            }
+            if (this.currentWord === undefined) {
+                this.upcoming = "";
             }
         },
     },
