@@ -6,8 +6,8 @@
         </span>
         <span class="_current _success"> </span>
 
-        <span class="_blinker"> </span>
-        <span> </span>
+        <span class="_blinker"></span>
+        <span>{{ word }}</span>
         <span>
             {{ upcomingWords }}
         </span>
@@ -21,8 +21,17 @@ export default {
     props: ["doneWords", "currentWord", "upcomingWords"],
     data() {
         return {
-            word: this.currentWord,
+            word: "",
+            next: "",
+            current: "",
+            done: "",
         };
+    },
+    watch: {
+        currentWord: function () {
+            this.word = this.currentWord;
+            console.log("Word is: " + this.word);
+        },
     },
 };
 </script>
@@ -38,7 +47,7 @@ export default {
 }
 
 ._blinker {
-    border-left: 1px solid black;
+    box-shadow: 0 0 1px 1px #888888;
     animation: blink-animation 1s steps(2, start) infinite;
 }
 
