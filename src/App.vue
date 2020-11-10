@@ -1,10 +1,10 @@
 <template>
-<button v-on:click="setTimer">timer</button>
 {{ timeLimit }}
-<button v-on:click="setCountdown">setCountdown</button>
 {{ countdown }}
+WPM = {{ wpm }}
 <Menu :newGame="newGame" />
 <Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" />
+<Progress :doneWords="doneWords" :currentText="currentText" />
 <Typing :gameActive="gameActive" :textStack="textStack" @inputchange="handleUserInput" />
 </template>
 
@@ -12,6 +12,7 @@
 import Menu from "./components/Menu.vue";
 import Paragraph from "./components/Paragraph.vue";
 import Typing from "./components/Typing.vue";
+import Progress from "./components/Progress.vue";
 import allText from "./text.json";
 
 export default {
@@ -20,6 +21,7 @@ export default {
         Menu,
         Paragraph,
         Typing,
+        Progress,
     },
     data() {
         return {
@@ -29,8 +31,8 @@ export default {
             userInput: "",
             countdown: 0,
             timeLimit: 0,
+            timeElapsed: 0,
             wpm: 0,
-            field: "",
             gameActive: false,
             doneWords: "",
             currentWord: "",
@@ -46,6 +48,7 @@ export default {
                 allText[Math.floor(Math.random() * allText.length)];
         },
         async newGame() {
+            this.reset();
             await this.newText();
             await this.setTextStack();
             await this.setCountdown();
@@ -78,19 +81,30 @@ export default {
         },
         setTimer() {
             this.gameActive = true;
-            this.timeLimit = Math.ceil(this.currentText.length * 100);
+            this.timeLimit = Math.ceil(this.currentText.length / 2.5);
 
             const that = this;
             let timer = setInterval(function () {
-                that.timeLimit -= 1;
                 if (that.timeLimit <= 0) {
                     clearInterval(timer);
                     that.gameActive = false;
                 }
+                that.timeElapsed += 1;
+                that.timeLimit -= 1;
             }, 1000);
         },
         handleUserInput(newVal) {
             this.userInput = newVal;
+        },
+        reset() {
+            this.textStack = [];
+            this.userInput= "";
+            this.timeElapsed= 0;
+            this.wpm= 0;
+            this.gameActive= false;
+            this.doneWords= "";
+            this.currentWord= "";
+            this.upcomingWords= "";
         },
     },
     watch: {
@@ -114,6 +128,10 @@ export default {
         gameActive: function () {
             if (this.gameActive === false) this.timeLimit = 0;
         },
+        doneWords: function () {
+            console.log('THIS DONEWORDS LENGTH: ' + this.doneWords);
+            this.wpm = Math.ceil((this.doneWords.length * 12) / this.timeElapsed );
+        }
     },
 };
 </script>
