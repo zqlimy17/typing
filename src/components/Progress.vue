@@ -1,9 +1,10 @@
 <template>
     <div class="progress-bar">
-        <div class="progress" :style="`width: ${progress()}%`" role="prrogressbar"
-            :aria-valuenow="progress()"
-            aria-valuemin="0" aria-valuemax="100">
-            <img src="../assets/duck.png">
+        <div class="progress" :style="`width: ${progress()}%`">
+            <img src="../assets/duck0.png" v-if="duck % 3 === 0">
+            <img src="../assets/duck1.png" v-else-if="duck % 3 === 1">
+            <img src="../assets/duck2.png" v-else-if="duck % 3 === 2">
+            <img src="../assets/duck0.png" v-else style="float: right">
         </div>
     </div>
 </template>
@@ -12,14 +13,22 @@
 export default {
     name: "Progress",
     props: ["doneWords", "currentText"],
+    data() {
+        return {
+            duck: 0
+        }
+    },
     methods: {
         progress() {
             return Math.ceil(this.doneWords.length / this.currentText.length * 100)
+        },
+        updateDuck(){
+            this.duck += 1;
         }
     },
     watch: {
         doneWords: function () {
-            this.progress();
+            this.updateDuck();
         }
     }
 }
@@ -27,17 +36,19 @@ export default {
 
 <style scoped>
 .progress-bar {
-    height: 20px;
+    height: 2px;
     width: 100%;
-    background-color: grey;
+    margin-right: 50px;
 }
 .progress{
-    height: 20px;
-    background-color: #fbd41b;
-
+    height: 2px;
+    border: dashed 2px darkgoldenrod;
 }
 
 img {
+    top: -25px;
     height: 50px;
+    position: relative;
+    left: 100%;
 }
 </style>
