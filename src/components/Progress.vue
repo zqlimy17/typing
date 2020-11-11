@@ -36,9 +36,7 @@ export default {
 
 <style scoped>
 .progress-bar {
-    height: 2px;
-    width: 100%;
-    margin-right: 50px;
+    margin-right: 65px;
 }
 .progress{
     height: 2px;

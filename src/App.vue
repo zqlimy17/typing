@@ -6,22 +6,26 @@ WPM = {{ wpm }}
 <Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" />
 <Progress :doneWords="doneWords" :currentText="currentText" />
 <Typing :gameActive="gameActive" :textStack="textStack" @inputchange="handleUserInput" />
+<Keyboard />
 </template>
 
 <script>
+import Keyboard from "./components/Keyboard.vue";
 import Menu from "./components/Menu.vue";
 import Paragraph from "./components/Paragraph.vue";
-import Typing from "./components/Typing.vue";
 import Progress from "./components/Progress.vue";
-import allText from "./text.json";
+import Typing from "./components/Typing.vue";
+
+import allText from "./assets/text.json";
 
 export default {
     name: "App",
     components: {
+        Keyboard,
         Menu,
         Paragraph,
-        Typing,
         Progress,
+        Typing,
     },
     data() {
         return {
