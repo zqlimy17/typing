@@ -1,90 +1,123 @@
 <template>
-<div class="keyboard">
-    <div class="keyboard__keys">
-        <template v-for="elem in numberRow" :key="elem">
-            <div class="keyboard__key" v-bind:class="{
-                        'keyboard__key--wide': wide.includes(elem),
-                        light: char === elem,
-                    }">
-                <span v-if="icons.includes(elem)">
-                    <i class="material-icons">{{ elem }}</i>
-                </span>
-                <span v-else v-bind:class="{ up: shift }">
-                    {{ elem }}
-                </span>
-            </div>
-        </template>
+<div>
+    <div class="layouts">
+        <button v-on:click="qwerty()" v-bind:class="{
+                    light: layout === 'qwerty',
+                }">
+            QWERTY
+        </button>
+        <button v-on:click="colemak()" v-bind:class="{
+                    light: layout === 'colemak',
+                }">
+            COLEMAK
+        </button>
+        <button v-on:click="colemakDH()" v-bind:class="{
+                    light: layout === 'colemakdh',
+                }">
+            COLEMAK-DH
+        </button>
+        <button v-on:click="workman()" v-bind:class="{
+                    light: layout === 'workman',
+                }">
+            WORKMAN
+        </button>
+        <button v-on:click="dvorak()" v-bind:class="{
+                    light: layout === 'dvorak',
+                }">
+            DVORAK
+        </button>
     </div>
-    <div class="keyboard__keys">
-        <template v-for="elem in topRow" :key="elem">
-            <div class="keyboard__key" v-bind:class="{
-                        'keyboard__key--wide': wide.includes(elem),
-                        light:
-                            char === elem ||
-                            ((elem === 'left-shift' ||
-                                elem === 'right-shift') &&
-                                shift),
-                    }">
-                <span v-if="icons.includes(elem)">
-                    <i class="material-icons">{{ elem }}</i>
-                </span>
-                <span v-else v-bind:class="{ up: shift }">
-                    {{ elem }}
-                </span>
-            </div>
-        </template>
-    </div>
+    <div class="keyboard">
+        <div class="keyboard__keys">
+            <template v-for="elem in numberRow" :key="elem">
+                <div class="keyboard__key" v-bind:class="{
+                            'keyboard__key--wide': wide.includes(elem),
+                            light: char === elem,
+                        }">
+                    <span v-if="icons.includes(elem)">
+                        <i class="material-icons">{{ elem }}</i>
+                    </span>
+                    <span v-else v-bind:class="{ up: shift }">
+                        {{ elem }}
+                    </span>
+                </div>
+            </template>
+        </div>
+        <div class="keyboard__keys">
+            <template v-for="elem in topRow" :key="elem">
+                <div class="keyboard__key" v-bind:class="{
+                            'keyboard__key--wide': wide.includes(elem),
+                            light:
+                                char === elem ||
+                                ((elem === 'left-shift' ||
+                                    elem === 'right-shift') &&
+                                    shift),
+                        }">
+                    <span v-if="icons.includes(elem)">
+                        <i class="material-icons">{{ elem }}</i>
+                    </span>
+                    <span v-else v-bind:class="{ up: shift }">
+                        {{ elem }}
+                    </span>
+                </div>
+            </template>
+        </div>
 
-    <div class="keyboard__keys">
-        <template v-for="elem in homeRow" :key="elem">
-            <div class="keyboard__key" v-bind:class="{
-                        'keyboard__key--wide': wide.includes(elem),
-                        light:
-                            char === elem ||
-                            ((elem === 'left-shift' ||
-                                elem === 'right-shift') &&
-                                shift),
-                    }">
-                <span v-if="elem === 'left-shift' || elem === 'right-shift'">
-                    <i class="material-icons">keyboard_arrow_up</i>
-                </span>
-                <span v-else-if="icons.includes(elem)">
-                    <i class="material-icons">{{ elem }}</i>
-                </span>
-                <span v-else v-bind:class="{ up: shift }">
-                    {{ elem }}
-                </span>
-            </div>
-        </template>
-    </div>
+        <div class="keyboard__keys">
+            <template v-for="elem in homeRow" :key="elem">
+                <div class="keyboard__key" v-bind:class="{
+                            'keyboard__key--wide': wide.includes(elem),
+                            light:
+                                char === elem ||
+                                ((elem === 'left-shift' ||
+                                    elem === 'right-shift') &&
+                                    shift),
+                        }">
+                    <span v-if="
+                                elem === 'left-shift' || elem === 'right-shift'
+                            ">
+                        <i class="material-icons">keyboard_arrow_up</i>
+                    </span>
+                    <span v-else-if="icons.includes(elem)">
+                        <i class="material-icons">{{ elem }}</i>
+                    </span>
+                    <span v-else v-bind:class="{ up: shift }">
+                        {{ elem }}
+                    </span>
+                </div>
+            </template>
+        </div>
 
-    <div class="keyboard__keys">
-        <template v-for="elem in bottomRow" :key="elem">
-            <div class="keyboard__key" v-bind:class="{
-                        'keyboard__key--wide': wide.includes(elem),
-                        light:
-                            char === elem ||
-                            ((elem === 'left-shift' ||
-                                elem === 'right-shift') &&
-                                shift),
-                    }">
-                <span v-if="elem === 'left-shift' || elem === 'right-shift'">
-                    <i class="material-icons">keyboard_arrow_up</i>
-                </span>
-                <span v-else-if="elem === 'space'"> </span>
-                <span v-else-if="icons.includes(elem)">
-                    <i class="material-icons">{{ elem }}</i>
-                </span>
-                <span v-else v-bind:class="{ up: shift }">
-                    {{ elem }}
-                </span>
-            </div>
-        </template>
-    </div>
-    <div class="keyboard__keys">
-        <div class="keyboard__key keyboard__key--wide" v-bind:class="{
-                    light: char === 'space',
-                }"></div>
+        <div class="keyboard__keys">
+            <template v-for="elem in bottomRow" :key="elem">
+                <div class="keyboard__key" v-bind:class="{
+                            'keyboard__key--wide': wide.includes(elem),
+                            light:
+                                char === elem ||
+                                ((elem === 'left-shift' ||
+                                    elem === 'right-shift') &&
+                                    shift),
+                        }">
+                    <span v-if="
+                                elem === 'left-shift' || elem === 'right-shift'
+                            ">
+                        <i class="material-icons">keyboard_arrow_up</i>
+                    </span>
+                    <span v-else-if="elem === 'space'"> </span>
+                    <span v-else-if="icons.includes(elem)">
+                        <i class="material-icons">{{ elem }}</i>
+                    </span>
+                    <span v-else v-bind:class="{ up: shift }">
+                        {{ elem }}
+                    </span>
+                </div>
+            </template>
+        </div>
+        <div class="keyboard__keys">
+            <div class="keyboard__key keyboard__key--wide" v-bind:class="{
+                        light: char === 'space',
+                    }"></div>
+        </div>
     </div>
 </div>
 </template>
@@ -96,6 +129,7 @@ export default {
     data() {
         return {
             char: "",
+            layout: "qwerty",
             shift: false,
             numberRow: [
                 "`",
@@ -181,7 +215,6 @@ export default {
                 ">",
                 "?",
             ],
-
             wide: [
                 "keyboard_backspace",
                 "keyboard_tab",
@@ -282,6 +315,331 @@ export default {
             }
         },
     },
+    methods: {
+        qwerty() {
+            this.layout = "qwerty";
+            this.numberRow = [
+                "`",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "0",
+                "-",
+                "=",
+                "keyboard_backspace",
+            ];
+            this.topRow = [
+                "keyboard_tab",
+                "q",
+                "w",
+                "e",
+                "r",
+                "t",
+                "y",
+                "u",
+                "i",
+                "o",
+                "p",
+                "[",
+                "]",
+                "\\",
+            ];
+            this.homeRow = [
+                "keyboard_capslock",
+                "a",
+                "s",
+                "d",
+                "f",
+                "g",
+                "h",
+                "j",
+                "k",
+                "l",
+                ";",
+                "'",
+                "keyboard_return",
+            ];
+            this.bottomRow = [
+                "left-shift",
+                "z",
+                "x",
+                "c",
+                "v",
+                "b",
+                "n",
+                "m",
+                ",",
+                ".",
+                "?",
+                "right-shift",
+            ];
+        },
+        colemakDH() {
+            this.layout = "colemakdh";
+            this.numberRow = [
+                "`",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "0",
+                "-",
+                "=",
+                "keyboard_backspace",
+            ];
+            this.topRow = [
+                "keyboard_tab",
+                "q",
+                "w",
+                "f",
+                "p",
+                "b",
+                "j",
+                "l",
+                "u",
+                "y",
+                ";",
+                "[",
+                "]",
+                "\\",
+            ];
+            this.homeRow = [
+                "keyboard_capslock",
+                "a",
+                "r",
+                "s",
+                "t",
+                "g",
+                "k",
+                "n",
+                "e",
+                "i",
+                "o",
+                "'",
+                "keyboard_return",
+            ];
+            this.bottomRow = [
+                "left-shift",
+                "z",
+                "x",
+                "c",
+                "d",
+                "v",
+                "m",
+                "h",
+                ",",
+                ".",
+                "?",
+                "right-shift",
+            ];
+        },
+        colemak() {
+            this.layout = "colemak";
+            this.numberRow = [
+                "`",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "0",
+                "-",
+                "=",
+                "keyboard_backspace",
+            ];
+            this.topRow = [
+                "keyboard_tab",
+                "q",
+                "w",
+                "f",
+                "p",
+                "g",
+                "j",
+                "l",
+                "u",
+                "y",
+                ";",
+                "[",
+                "]",
+                "\\",
+            ];
+            this.homeRow = [
+                "keyboard_capslock",
+                "a",
+                "r",
+                "s",
+                "t",
+                "d",
+                "h",
+                "n",
+                "e",
+                "i",
+                "o",
+                "'",
+                "keyboard_return",
+            ];
+            this.bottomRow = [
+                "left-shift",
+                "z",
+                "x",
+                "c",
+                "v",
+                "b",
+                "k",
+                "m",
+                ",",
+                ".",
+                "?",
+                "right-shift",
+            ];
+        },
+        workman() {
+            this.layout = "workman";
+            this.numberRow = [
+                "`",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "0",
+                "-",
+                "=",
+                "keyboard_backspace",
+            ];
+            this.topRow = [
+                "keyboard_tab",
+                "q",
+                "d",
+                "r",
+                "w",
+                "b",
+                "j",
+                "f",
+                "u",
+                "p",
+                ";",
+                "[",
+                "]",
+                "\\",
+            ];
+            this.homeRow = [
+                "keyboard_capslock",
+                "a",
+                "s",
+                "h",
+                "t",
+                "g",
+                "y",
+                "n",
+                "e",
+                "o",
+                "i",
+                "'",
+                "keyboard_return",
+            ];
+            this.bottomRow = [
+                "left-shift",
+                "z",
+                "x",
+                "m",
+                "c",
+                "v",
+                "k",
+                "l",
+                ",",
+                ".",
+                "?",
+                "right-shift",
+            ];
+        },
+        dvorak() {
+            this.layout = "dvorak";
+            this.numberRow = [
+                "`",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "0",
+                "[",
+                "]",
+                "keyboard_backspace",
+            ];
+            this.topRow = [
+                "keyboard_tab",
+                "'",
+                ",",
+                ".",
+                "p",
+                "y",
+                "f",
+                "g",
+                "c",
+                "r",
+                "l",
+                "/",
+                "=",
+                "\\",
+            ];
+            this.homeRow = [
+                "keyboard_capslock",
+                "a",
+                "o",
+                "e",
+                "u",
+                "i",
+                "d",
+                "h",
+                "t",
+                "n",
+                "s",
+                "-",
+                "keyboard_return",
+            ];
+            this.bottomRow = [
+                "left-shift",
+                ";",
+                "q",
+                "j",
+                "k",
+                "x",
+                "b",
+                "m",
+                "w",
+                "v",
+                "z",
+                "right-shift",
+            ];
+        },
+    },
+    mounted() {
+        this.colemakDH();
+    },
 };
 </script>
 
@@ -311,10 +669,6 @@ export default {
     position: relative;
 }
 
-.light {
-    background: greenyellow;
-}
-
 .keyboard__key--wide {
     flex-grow: 3;
 }
@@ -326,5 +680,32 @@ export default {
 .keyboard span {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     height: 24px;
+}
+
+.layouts {
+    display: flex;
+    width: 728px;
+    margin: 0 auto;
+}
+
+.layouts button {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    flex-grow: 1;
+    background: white;
+    height: 45px;
+    margin: 3px;
+    padding: 0 1rem;
+    border-radius: 4px;
+    border: 1px solid black;
+    font-size: 1.05rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    position: relative;
+}
+
+.light {
+    background: greenyellow !important;
 }
 </style>

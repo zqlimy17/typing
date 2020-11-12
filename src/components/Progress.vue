@@ -44,9 +44,9 @@ export default {
 }
 
 .progress {
-    margin: 2rem;
+    margin: 2rem 0;
     height: 2px;
-    border: dashed 2px darkgoldenrod;
+    border: solid 1px black;
 }
 
 img {
