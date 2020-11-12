@@ -3,10 +3,10 @@
 {{ countdown }}
 WPM = {{ wpm }}
 <Menu :newGame="newGame" />
-<Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" />
+<Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" v-on:char="newChar($event)" />
 <Progress :doneWords="doneWords" :currentText="currentText" />
 <Typing :gameActive="gameActive" :textStack="textStack" @inputchange="handleUserInput" />
-<Keyboard />
+<Keyboard :currentChar="currentChar" />
 </template>
 
 <script>
@@ -41,10 +41,8 @@ export default {
             doneWords: "",
             currentWord: "",
             upcomingWords: "",
+            currentChar: "",
         };
-    },
-    mounted() {
-        console.log("App Mounted");
     },
     methods: {
         newText() {
@@ -66,8 +64,6 @@ export default {
                         return n;
                     })) :
                 (this.textStack = []);
-            console.log(this.textStack);
-            console.log("Number of words: " + this.textStack.length);
         },
         setCountdown() {
             this.countdown = 1;
@@ -75,7 +71,6 @@ export default {
             this.upcomingWords = this.textStack.slice(1).join(" ");
             const that = this;
             let countdown = setInterval(function () {
-                console.log(that.countdown);
                 that.countdown -= 1;
                 if (that.countdown <= 0) {
                     clearInterval(countdown);
@@ -102,13 +97,16 @@ export default {
         },
         reset() {
             this.textStack = [];
-            this.userInput= "";
-            this.timeElapsed= 0;
-            this.wpm= 0;
-            this.gameActive= false;
-            this.doneWords= "";
-            this.currentWord= "";
-            this.upcomingWords= "";
+            this.userInput = "";
+            this.timeElapsed = 0;
+            this.wpm = 0;
+            this.gameActive = false;
+            this.doneWords = "";
+            this.currentWord = "";
+            this.upcomingWords = "";
+        },
+        newChar(nextChar) {
+            this.currentChar = nextChar;
         },
     },
     watch: {
@@ -133,9 +131,10 @@ export default {
             if (this.gameActive === false) this.timeLimit = 0;
         },
         doneWords: function () {
-            console.log('THIS DONEWORDS LENGTH: ' + this.doneWords);
-            this.wpm = Math.ceil((this.doneWords.length * 12) / this.timeElapsed );
-        }
+            this.wpm = Math.ceil(
+                (this.doneWords.length * 12) / this.timeElapsed
+            );
+        },
     },
 };
 </script>

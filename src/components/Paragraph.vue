@@ -33,7 +33,6 @@ export default {
     },
     watch: {
         currentWord: function () {
-            console.log("this current word is: " + this.currentWord);
             if (this.currentWord) {
                 if (this.currentWord[this.currentWord.length - 1] === " ") {
                     this.word = this.currentWord.slice(0, -1);
@@ -43,6 +42,7 @@ export default {
                 this.currentStack = this.word.split("");
                 this.done = "";
                 this.upcoming = this.word;
+                this.emitChar(this.upcoming[0]);
             } else if (this.currentWord === undefined) {
                 this.upcoming = "";
                 this.done = "";
@@ -50,7 +50,6 @@ export default {
         },
         userInput: function () {
             let toCompare = this.word.slice(0, this.userInput.length);
-            console.log(this.upcoming, this.wrongDone);
             this.blinker = false;
             setTimeout(() => {
                 this.blinker = true;
@@ -62,6 +61,9 @@ export default {
                     this.done = this.done.concat(nextLetter);
                 }
                 this.upcoming = this.word.substr(toCompare.length);
+
+                this.emitChar(this.upcoming[0] || "space");
+
                 this.wrongDone = "";
                 this.done = this.done.slice(0, toCompare.length);
             } else if (
@@ -76,6 +78,8 @@ export default {
                 }
 
                 this.upcoming = this.word.substr(toCompare.length);
+                this.emitChar("keyboard_backspace");
+
                 this.wrongDone = this.wrongDone.substr(
                     0,
                     this.wrongDone.length - 1
@@ -84,6 +88,8 @@ export default {
                 this.wrongDone = this.wrongDone.concat(" ");
                 this.wrongInput = true;
             } else {
+                this.emitChar("keyboard_backspace");
+
                 let nextLetter = this.upcoming[0];
                 if (nextLetter !== undefined) {
                     this.wrongDone = this.wrongDone.concat(nextLetter);
@@ -93,6 +99,11 @@ export default {
             if (this.currentWord === undefined) {
                 this.upcoming = "";
             }
+        },
+    },
+    methods: {
+        emitChar(v) {
+            this.$emit("char", v);
         },
     },
 };
