@@ -37,6 +37,7 @@ export default {
             timeLimit: 0,
             timeElapsed: 0,
             wpm: 0,
+            gameInitialised: false,
             gameActive: false,
             doneWords: "",
             currentWord: "",
@@ -66,7 +67,8 @@ export default {
                 (this.textStack = []);
         },
         setCountdown() {
-            this.countdown = 1;
+            this.gameInitialised = true;
+            this.countdown = 3;
             this.currentWord = this.textStack[0];
             this.upcomingWords = this.textStack.slice(1).join(" ");
             const that = this;
@@ -87,6 +89,7 @@ export default {
                 if (that.timeLimit <= 0) {
                     clearInterval(timer);
                     that.gameActive = false;
+                    that.gameInitialised = false;
                 }
                 that.timeElapsed += 1;
                 that.timeLimit -= 1;
@@ -144,10 +147,10 @@ export default {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Merriweather", serif;
 }
 
 #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

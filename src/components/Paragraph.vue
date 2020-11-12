@@ -1,16 +1,14 @@
 <template>
-<div>
-    <p>
-        <span class="_success">
-            {{ doneWords }}
-        </span>
-        <span class="_current _success">{{ done }}</span>
-        <span class="_current _danger">{{ wrongDone }}</span>
-        <span class="_current" v-bind:class="{ _blinker: blinker }"></span>
-        <span class="_current">{{ upcoming }}</span>
-        <span v-if="!wrongInput">&nbsp;</span>
-        <span>{{ upcomingWords }} </span>
-    </p>
+<div id="paragraph">
+    <span class="_success">
+        {{ doneWords }}
+    </span>
+    <span class="_current _success">{{ done }}</span>
+    <span class="_current _danger">{{ wrongDone }}</span>
+    <span class="_current" v-bind:class="{ _blinker: blinker }"></span>
+    <span class="_current">{{ upcoming }}</span>
+    <span v-if="!wrongInput" style="display:inline-block">&nbsp;</span>
+    <span>{{ upcomingWords }} </span>
 </div>
 </template>
 
@@ -110,8 +108,17 @@ export default {
 </script>
 
 <style scoped>
+#paragraph {
+    max-width: 60%;
+    margin: 0 auto;
+}
+
+#paragraph span {
+    font-size: 1.5rem;
+}
+
 ._success {
-    color: #99cc00;
+    color: green;
 }
 
 ._danger {
