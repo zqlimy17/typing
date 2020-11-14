@@ -1,12 +1,19 @@
 <template>
+<h1 class="text-center p-3">Typing</h1>
 {{ timeLimit }}
 {{ countdown }}
 WPM = {{ wpm }}
+<Timer />
+<Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" @char="currentChar = $event" />
+<div v-bind:class="{
+            wrong: currentChar === 'keyboard_backspace',
+            hidden: gameActive === false && gameStarted === false,
+        }">
+    <Progress :doneWords="doneWords" :currentText="currentText" />
+    <Typing :gameActive="gameActive" :textStack="textStack" @inputchange="userInput = $event" />
+    <Keyboard :currentChar="currentChar" />
+</div>
 <Menu :newGame="newGame" />
-<Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" v-on:char="newChar($event)" />
-<Progress :doneWords="doneWords" :currentText="currentText" />
-<Typing :gameActive="gameActive" :textStack="textStack" @inputchange="handleUserInput" />
-<Keyboard :currentChar="currentChar" />
 </template>
 
 <script>
@@ -14,6 +21,7 @@ import Keyboard from "./components/Keyboard.vue";
 import Menu from "./components/Menu.vue";
 import Paragraph from "./components/Paragraph.vue";
 import Progress from "./components/Progress.vue";
+import Timer from "./components/Timer.vue";
 import Typing from "./components/Typing.vue";
 
 import allText from "./assets/text.json";
@@ -25,6 +33,7 @@ export default {
         Menu,
         Paragraph,
         Progress,
+        Timer,
         Typing,
     },
     data() {
@@ -37,7 +46,7 @@ export default {
             timeLimit: 0,
             timeElapsed: 0,
             wpm: 0,
-            gameInitialised: false,
+            gameStarted: false,
             gameActive: false,
             doneWords: "",
             currentWord: "",
@@ -67,7 +76,7 @@ export default {
                 (this.textStack = []);
         },
         setCountdown() {
-            this.gameInitialised = true;
+            this.gameStarted = true;
             this.countdown = 3;
             this.currentWord = this.textStack[0];
             this.upcomingWords = this.textStack.slice(1).join(" ");
@@ -89,14 +98,11 @@ export default {
                 if (that.timeLimit <= 0) {
                     clearInterval(timer);
                     that.gameActive = false;
-                    that.gameInitialised = false;
+                    that.gameStarted = false;
                 }
                 that.timeElapsed += 1;
                 that.timeLimit -= 1;
             }, 1000);
-        },
-        handleUserInput(newVal) {
-            this.userInput = newVal;
         },
         reset() {
             this.textStack = [];
@@ -107,9 +113,6 @@ export default {
             this.doneWords = "";
             this.currentWord = "";
             this.upcomingWords = "";
-        },
-        newChar(nextChar) {
-            this.currentChar = nextChar;
         },
     },
     watch: {
@@ -153,5 +156,22 @@ export default {
 #app {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.p-3 {
+    padding: 1rem;
+}
+
+.wrong .input {
+    background-color: lightcoral;
+    border-color: red;
+}
+
+.hidden {
+    display: none;
 }
 </style>

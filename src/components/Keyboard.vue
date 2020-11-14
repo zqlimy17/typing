@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="layouts">
+    <!--<div class="layouts">
         <button v-on:click="qwerty()" v-bind:class="{
                     light: layout === 'qwerty',
                 }">
@@ -26,7 +26,7 @@
                 }">
             DVORAK
         </button>
-    </div>
+    </div> -->
     <div class="keyboard">
         <div class="keyboard__keys">
             <template v-for="elem in numberRow" :key="elem">
