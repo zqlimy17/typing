@@ -707,5 +707,22 @@ export default {
 
 .light {
     background: greenyellow !important;
+    z-index: -1;
+}
+
+.keyboard {
+    animation: fadeInKeyboard ease 1.5s;
+}
+
+@keyframes fadeInKeyboard {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 </style>

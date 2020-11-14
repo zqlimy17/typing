@@ -1,15 +1,12 @@
 <template>
 <h1 class="text-center p-3">Typing</h1>
-{{ timeLimit }}
-{{ countdown }}
-WPM = {{ wpm }}
-<Timer />
+<Timer :countdown="countdown" :timeLimit="timeLimit" :timeElapsed="timeElapsed" />
 <Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" @char="currentChar = $event" />
+<Progress :doneWords="doneWords" :currentText="currentText" />
 <div v-bind:class="{
             wrong: currentChar === 'keyboard_backspace',
             hidden: gameActive === false && gameStarted === false,
         }">
-    <Progress :doneWords="doneWords" :currentText="currentText" />
     <Typing :gameActive="gameActive" :textStack="textStack" @inputchange="userInput = $event" />
     <Keyboard :currentChar="currentChar" />
 </div>
@@ -77,7 +74,9 @@ export default {
         },
         setCountdown() {
             this.gameStarted = true;
-            this.countdown = 3;
+            this.countdown = 5;
+            this.timeLimit = Math.ceil(this.currentText.length / 2.5);
+
             this.currentWord = this.textStack[0];
             this.upcomingWords = this.textStack.slice(1).join(" ");
             const that = this;
@@ -87,11 +86,10 @@ export default {
                     clearInterval(countdown);
                     that.setTimer();
                 }
-            }, 1000);
+            }, 900);
         },
         setTimer() {
             this.gameActive = true;
-            this.timeLimit = Math.ceil(this.currentText.length / 2.5);
 
             const that = this;
             let timer = setInterval(function () {
@@ -146,7 +144,9 @@ export default {
 </script>
 
 <style>
-* {
+*,
+*:before,
+*:after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;

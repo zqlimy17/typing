@@ -43,6 +43,7 @@ export default {
     padding: 1rem;
     border: 1px solid black;
     border-radius: 4px;
+    animation: fadeInTyping ease 1.5s;
 }
 
 .input:after {
@@ -72,5 +73,19 @@ export default {
 
 .input input:-webkit-input-placeholder {
     color: #7881a1;
+}
+
+@keyframes fadeInTyping {
+    0% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 </style>
