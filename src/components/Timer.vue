@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="timeLimit" v-if="timeLimit > 0">
-        Time Limit: {{ timeLimit }}
+        Time Limit: {{ timeLimit }}s
     </div>
     <div v-else>
         &nbsp;
@@ -53,6 +53,7 @@ export default {
 
 .countdown {
     opacity: 0;
+    z-index: 1;
     animation: fade 5s;
     position: absolute;
     left: 50%;

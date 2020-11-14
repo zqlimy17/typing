@@ -30,7 +30,7 @@ export default {
         };
     },
     watch: {
-        currentWord: function () {
+        currentWord() {
             if (this.currentWord) {
                 if (this.currentWord[this.currentWord.length - 1] === " ") {
                     this.word = this.currentWord.slice(0, -1);
@@ -46,7 +46,7 @@ export default {
                 this.done = "";
             }
         },
-        userInput: function () {
+        userInput() {
             let toCompare = this.word.slice(0, this.userInput.length);
             this.blinker = false;
             setTimeout(() => {
@@ -110,6 +110,7 @@ export default {
 <style scoped>
 #paragraph {
     max-width: 60%;
+    color: var(--dynamic-font-color);
     margin: 0 auto;
 }
 
@@ -131,7 +132,7 @@ export default {
 }
 
 ._blinker {
-    box-shadow: 0 0 1px 1px black;
+    box-shadow: 0 0 1px 1px var(--dynamic-font-color);
     animation: blink-animation 1s steps(2, start) infinite;
     animation-delay: 2s;
 }

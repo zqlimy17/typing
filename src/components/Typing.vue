@@ -10,16 +10,16 @@ export default {
     props: ["gameActive", "textStack", "userInput"],
     computed: {
         internalValue: {
-            get: function () {
+            get() {
                 return this.value;
             },
-            set: function (newValue) {
+            set(newValue) {
                 this.$emit("inputchange", newValue);
             },
         },
     },
     watch: {
-        gameActive: function () {
+        gameActive() {
             if (this.gameActive === true) {
                 const vm = this;
                 vm.detailsEditable = true;
@@ -34,6 +34,8 @@ export default {
 
 <style>
 .input {
+    background: var(--app-background-color);
+    color: var(--dynamic-font-color);
     position: relative;
     display: flex;
     flex-direction: row;
@@ -41,7 +43,7 @@ export default {
     margin: 1rem auto;
     border-radius: 2px;
     padding: 1rem;
-    border: 1px solid black;
+    border: 1px solid var(--dynamic-border-color);
     border-radius: 4px;
     animation: fadeInTyping ease 1.5s;
 }
@@ -62,7 +64,7 @@ export default {
     display: block;
     margin: 0 auto;
     flex-grow: 1;
-    color: black;
+    color: var(--dynamic-font-color);
     font-size: 1.8rem;
     line-height: 2.4rem;
     vertical-align: middle;

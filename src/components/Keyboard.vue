@@ -1,32 +1,5 @@
 <template>
 <div>
-    <!--<div class="layouts">
-        <button v-on:click="qwerty()" v-bind:class="{
-                    light: layout === 'qwerty',
-                }">
-            QWERTY
-        </button>
-        <button v-on:click="colemak()" v-bind:class="{
-                    light: layout === 'colemak',
-                }">
-            COLEMAK
-        </button>
-        <button v-on:click="colemakDH()" v-bind:class="{
-                    light: layout === 'colemakdh',
-                }">
-            COLEMAK-DH
-        </button>
-        <button v-on:click="workman()" v-bind:class="{
-                    light: layout === 'workman',
-                }">
-            WORKMAN
-        </button>
-        <button v-on:click="dvorak()" v-bind:class="{
-                    light: layout === 'dvorak',
-                }">
-            DVORAK
-        </button>
-    </div> -->
     <div class="keyboard">
         <div class="keyboard__keys">
             <template v-for="elem in numberRow" :key="elem">
@@ -125,7 +98,7 @@
 <script>
 export default {
     name: "Keyboard",
-    props: ["currentChar"],
+    props: ["currentChar", "currentKeyboard"],
     data() {
         return {
             char: "",
@@ -237,7 +210,7 @@ export default {
         };
     },
     watch: {
-        currentChar: function () {
+        currentChar() {
             if (
                 this.currentChar == this.currentChar.toUpperCase() ||
                 this.shiftKeys.includes(this.currentChar)
@@ -312,6 +285,24 @@ export default {
                     break;
                 default:
                     this.char = this.currentChar.toLowerCase();
+            }
+        },
+        currentKeyboard() {
+            switch (this.currentKeyboard) {
+                case "colemak-dh":
+                    this.colemakDH();
+                    break;
+                case "dvorak":
+                    this.dvorak();
+                    break;
+                case "colemak":
+                    this.colemak();
+                    break;
+                case "workman":
+                    this.workman();
+                    break;
+                default:
+                    this.qwerty();
             }
         },
     },
@@ -637,15 +628,13 @@ export default {
             ];
         },
     },
-    mounted() {
-        this.colemakDH();
-    },
 };
 </script>
 
 <style>
 .keyboard {
     margin: 0 auto;
+    color: var(--dynamic-font-color);
     width: 728px;
 }
 
@@ -659,7 +648,7 @@ export default {
     width: 45px;
     margin: 3px;
     border-radius: 4px;
-    border: 1px solid black;
+    border: 1px solid var(--dynamic-border-color);
     font-size: 1.05rem;
     display: inline-flex;
     align-items: center;
@@ -691,12 +680,12 @@ export default {
 .layouts button {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     flex-grow: 1;
-    background: white;
+    background: var(--app-background-color);
     height: 45px;
     margin: 3px;
     padding: 0 1rem;
     border-radius: 4px;
-    border: 1px solid black;
+    border: 1px solid var(--dynamic-border-color);
     font-size: 1.05rem;
     display: inline-flex;
     align-items: center;
@@ -706,8 +695,8 @@ export default {
 }
 
 .light {
-    background: greenyellow !important;
-    z-index: -1;
+    background: var(--dynamic-light-color) !important;
+    z-index: 0;
 }
 
 .keyboard {
