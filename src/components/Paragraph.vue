@@ -15,7 +15,14 @@
 <script>
 export default {
     name: "Paragraph",
-    props: ["doneWords", "currentWord", "upcomingWords", "userInput"],
+    props: [
+        "doneWords",
+        "currentWord",
+        "upcomingWords",
+        "userInput",
+        "mistakes",
+        "handleMistake",
+    ],
     data() {
         return {
             word: "",
@@ -68,13 +75,6 @@ export default {
                 this.userInput.length <
                 this.done.length + this.wrongDone.length
             ) {
-                if (
-                    this.wrongDone.length === 1 ||
-                    this.userInput.length === toCompare.length
-                ) {
-                    this.wrongInput = false;
-                }
-
                 this.upcoming = this.word.substr(toCompare.length);
                 this.emitChar("keyboard_backspace");
 
@@ -85,10 +85,11 @@ export default {
             } else if (this.userInput.length > toCompare.length) {
                 this.wrongDone = this.wrongDone.concat(" ");
                 this.wrongInput = true;
+                this.handleMistake();
                 this.emitChar("keyboard_backspace");
             } else {
                 this.emitChar("keyboard_backspace");
-
+                this.handleMistake();
                 let nextLetter = this.upcoming[0];
                 if (nextLetter !== undefined) {
                     this.wrongDone = this.wrongDone.concat(nextLetter);
@@ -120,7 +121,7 @@ export default {
 }
 
 ._success {
-    color: greenyellow;
+    color: var(--d-success);
 }
 
 ._danger {

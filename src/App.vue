@@ -1,8 +1,8 @@
 <template>
 <div>
     <h1 class="text-center p-3">Typing</h1>
-    <Timer :countdown="countdown" :timeLimit="timeLimit" :timeElapsed="timeElapsed" />
-    <Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" @char="currentChar = $event" />
+    <Timer :countdown="countdown" :timeLimit="timeLimit" :wpm="wpm" />
+    <Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" @char="currentChar = $event" :handleMistake="handleMistake" :mistakes="mistakes" />
     <Progress :doneWords="doneWords" :currentText="currentText" :currentTheme="currentTheme" />
     <div v-bind:class="{
                 wrong: currentChar === 'keyboard_backspace',
@@ -13,7 +13,7 @@
         <Typing :gameActive="gameActive" :textStack="textStack" @inputchange="userInput = $event" />
         <Keyboard :currentChar="currentChar" :currentKeyboard="currentKeyboard" />
     </div>
-    <Post v-if="postGame" :wpm="wpm" />
+    <Post v-if="postGame" :wpm="wpm" :mistakes="mistakes" />
     <Menu :newGame="newGame" :retry="retry" :handleSettings="handleSettings" :gameStarted="gameStarted" :postGame="postGame" :wpm="wpm" :gameActive="gameActive" />
     <Settings :settings="settings" :currentTheme="currentTheme" :currentKeyboard="currentKeyboard" :updateTheme="updateTheme" :updateKeyboard="updateKeyboard" :handleSettings="handleSettings" />
 </div>
@@ -63,6 +63,7 @@ export default {
             settings: false,
             currentTheme: "dark",
             currentKeyboard: "colemak-dh",
+            mistakes: [],
         };
     },
     methods: {
@@ -98,7 +99,6 @@ export default {
             await this.setTextStack();
             await this.setCountdown();
         },
-        setWpm() {},
         setTextStack() {
             this.currentText !== "" ?
                 (this.textStack = this.currentText
@@ -112,7 +112,7 @@ export default {
             this.postGame = false;
             this.gameStarted = true;
             this.countdown = 5;
-            this.timeLimit = Math.ceil(this.currentText.length / 200);
+            this.timeLimit = Math.ceil(this.currentText.length * 200);
             this.currentWord = this.textStack[0];
             this.upcomingWords = this.textStack.slice(1).join(" ");
             const that = this;
@@ -148,6 +148,12 @@ export default {
         handleSettings() {
             this.settings = !this.settings;
         },
+        handleMistake() {
+            let last = this.mistakes[this.mistakes.length - 1];
+            if (this.currentWord !== last) {
+                this.mistakes.push(this.currentWord);
+            }
+        },
     },
 
     watch: {
@@ -170,15 +176,11 @@ export default {
             if (this.gameActive === false) this.timeLimit = 0;
             if (this.timeLimit === 0 && this.gameActive === false) {
                 this.postGame = true;
-                console.log("GAME ACTIVE", this.gameActive);
-                console.log("GAME STARTED", this.gameStarted);
-                console.log("POSTGAME", this.postGame);
             }
         },
         doneWords() {
-            this.wpm = Math.ceil(
-                (this.doneWords.length * 12) / this.timeElapsed
-            );
+            this.wpm =
+                Math.ceil((this.doneWords.length * 12) / this.timeElapsed) || 0;
         },
         currentTheme() {
             let htmlElement = document.documentElement;

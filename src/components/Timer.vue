@@ -30,6 +30,7 @@
     </div>
     <div class="timeLimit" v-if="timeLimit > 0">
         Time Limit: {{ timeLimit }}s
+        <span style="float:right">WPM: {{ wpm }}</span>
     </div>
     <div v-else>
         &nbsp;
@@ -40,7 +41,7 @@
 <script>
 export default {
     name: "Timer",
-    props: ["countdown", "timeLimit"],
+    props: ["countdown", "timeLimit", "wpm"],
 };
 </script>
 
@@ -94,7 +95,7 @@ export default {
     overflow: hidden;
     position: relative;
     height: 100%;
-    background: var(--d-font);
+    background: grey;
     border-radius: inherit;
 }
 
