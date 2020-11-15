@@ -28,7 +28,7 @@
             </svg>
         </div>
     </div>
-    <div class="timeLimit" v-if="timeLimit > 0">
+    <div class="timeLimit" v-if="timeLimit > 1">
         Time Limit: {{ timeLimit }}s
         <span style="float:right">WPM: {{ wpm }}</span>
     </div>

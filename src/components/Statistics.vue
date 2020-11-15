@@ -6,7 +6,7 @@
     </div>
     <div class="stat">
         <h3>Average WPM (Last 10)</h3>
-        <p>{{ lastTenWPM.toFixed(2) }}</p>
+        <p>{{ lastTenWPM.toFixed(0) }}</p>
     </div>
     <div class="stat">
         <h3>Latest WPM</h3>
@@ -36,5 +36,9 @@ export default {
 .stat {
     width: 25%;
     display: inline-block;
+}
+
+.stat h3 {
+    text-decoration: underline;
 }
 </style>

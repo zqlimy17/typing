@@ -1,7 +1,5 @@
 <template>
 <div>
-    {{ wpm }}
-    {{ lastWPM }}
     <h1 class="text-center p-3">Typing</h1>
     <Timer :countdown="countdown" :timeLimit="timeLimit" :wpm="wpm" />
     <Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" @char="currentChar = $event" :handleMistake="handleMistake" :mistakes="mistakes" :handleWrong="handleWrong" />
@@ -12,13 +10,13 @@
                     (gameActive === false && gameStarted === false) ||
                     postGame === true,
             }">
-        <Typing :gameActive="gameActive" :textStack="textStack" @inputchange="userInput = $event" />
+        <Typing :gameActive="gameActive" :textStack="textStack" @inputchange="userInput = $event" :userInput="userInput" />
         <Keyboard :currentChar="currentChar" :currentKeyboard="currentKeyboard" />
     </div>
     <Post v-if="postGame" :wpm="wpm" :mistakes="mistakes" :accuracy="accuracy" />
     <Menu :newGame="newGame" :retry="retry" :handleSettings="handleSettings" :gameStarted="gameStarted" :postGame="postGame" :wpm="wpm" :gameActive="gameActive" />
-    <Settings :settings="settings" :currentTheme="currentTheme" :currentKeyboard="currentKeyboard" :updateTheme="updateTheme" :updateKeyboard="updateKeyboard" :handleSettings="handleSettings" />
-    <Statistics :bestWPM="bestWPM" :scores="scores" :lastWPM="lastWPM" :lastTenWPM="lastTenWPM" />
+    <Settings :settings="settings" :currentTheme="currentTheme" :currentKeyboard="currentKeyboard" :updateTheme="updateTheme" :updateKeyboard="updateKeyboard" :handleSettings="handleSettings" :forceRerender="forceRerender" />
+    <Statistics :bestWPM="bestWPM" :scores="scores" :lastWPM="lastWPM" :lastTenWPM="lastTenWPM" v-if="!gameStarted || postGame" />
 </div>
 </template>
 
@@ -66,8 +64,8 @@ export default {
             upcomingWords: "",
             currentChar: "",
             settings: false,
-            currentTheme: "dark",
-            currentKeyboard: "colemak-dh",
+            currentTheme: "light",
+            currentKeyboard: "qwerty",
             lastTenWPM: 0,
             mistakes: [],
             wrongCount: 0,
@@ -84,6 +82,7 @@ export default {
         },
         async newGame() {
             this.textStack = [];
+            this.mistakes = [];
             this.userInput = "";
             this.timeElapsed = 0;
             this.wpm = 0;
@@ -101,6 +100,7 @@ export default {
         },
         async retry() {
             this.textStack = [];
+            this.mistakes = [];
             this.userInput = "";
             this.timeElapsed = 0;
             this.wpm = 0;
@@ -146,7 +146,6 @@ export default {
                 if (that.timeLimit <= 0 || !that.gameActive) {
                     that.gameActive = false;
                     clearInterval(timer);
-                    that.timeLimit += 1;
                 } else {
                     that.timeLimit -= 1;
                     that.timeElapsed += 1;
@@ -179,6 +178,7 @@ export default {
                 this.bestWPM = this.wpm;
             }
             this.lastWPM = this.wpm;
+            this.lastTen();
             localStorage.setItem("bestWPM", this.bestWPM);
             localStorage.setItem("scores", JSON.stringify(this.scores));
             localStorage.setItem("lastWPM", this.lastWPM);
@@ -191,6 +191,15 @@ export default {
                 this.lastTenWPM =
                     this.scores.reduce((a, b) => a + b) / this.scores.length;
             }
+        },
+        forceRerender() {
+            this.currentKeyboard = "qwerty";
+            this.currentTheme = "light";
+            let htmlElement = document.documentElement;
+            htmlElement.setAttribute("theme", "light");
+            this.scores = [];
+            this.bestWPM = 0;
+            this.lastWPM = 0;
         },
     },
 
@@ -205,6 +214,9 @@ export default {
                     this.upcomingWords = this.textStack.slice(1).join(" ");
                     if (this.textStack.length <= 0) {
                         this.gameActive = false;
+                        this.wpm = Math.ceil(
+                            (this.doneWords.length * 12) / this.timeElapsed
+                        );
                         this.save();
                     }
                 }
@@ -302,7 +314,7 @@ export default {
     --d-bg: #704214;
     --d-font: #d4b595;
     --d-border: #eadbcb;
-    --d-light: green;
+    --d-light: beige;
     --d-success: greenyellow;
     --d-placeholder: darkgrey;
 }
@@ -311,7 +323,7 @@ export default {
     --d-bg: #002535;
     --d-font: #bfd2d9;
     --d-border: #3b89ac;
-    --d-light: green;
+    --d-light: #3b89ac;
     --d-success: greenyellow;
     --d-placeholder: #22646e;
 }
@@ -320,7 +332,7 @@ export default {
     --d-bg: #5c6b24;
     --d-font: #e7e8a6;
     --d-border: #cdcd8e;
-    --d-light: green;
+    --d-light: #a8b59e;
     --d-success: greenyellow;
     --d-placeholder: #a8b59e;
 }

@@ -11,7 +11,7 @@ export default {
     computed: {
         internalValue: {
             get() {
-                return this.value;
+                return this.userInput;
             },
             set(newValue) {
                 this.$emit("inputchange", newValue);
@@ -28,6 +28,7 @@ export default {
                 });
             }
         },
+        userInput() {},
     },
 };
 </script>

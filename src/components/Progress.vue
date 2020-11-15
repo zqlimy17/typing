@@ -51,8 +51,8 @@ export default {
     margin-right: 50px;
     margin: 0 auto;
     color: var(--d-font);
-
-    max-width: 60%;
+    width: 60%;
+    max-width: 750px;
 }
 
 .progress {

@@ -108,6 +108,8 @@ export default {
             if (this.currentWord === undefined) {
                 this.upcoming = "";
             }
+            //
+            //
         },
     },
     methods: {
