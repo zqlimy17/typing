@@ -120,7 +120,8 @@ export default {
 
 <style scoped>
 #paragraph {
-    max-width: 60%;
+    width: 60%;
+    max-width: 700px;
     color: var(--d-font);
     margin: 0 auto;
 }

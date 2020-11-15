@@ -1,5 +1,7 @@
 <template>
 <div>
+    {{ wpm }}
+    {{ lastWPM }}
     <h1 class="text-center p-3">Typing</h1>
     <Timer :countdown="countdown" :timeLimit="timeLimit" :wpm="wpm" />
     <Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" @char="currentChar = $event" :handleMistake="handleMistake" :mistakes="mistakes" :handleWrong="handleWrong" />
@@ -16,6 +18,7 @@
     <Post v-if="postGame" :wpm="wpm" :mistakes="mistakes" :accuracy="accuracy" />
     <Menu :newGame="newGame" :retry="retry" :handleSettings="handleSettings" :gameStarted="gameStarted" :postGame="postGame" :wpm="wpm" :gameActive="gameActive" />
     <Settings :settings="settings" :currentTheme="currentTheme" :currentKeyboard="currentKeyboard" :updateTheme="updateTheme" :updateKeyboard="updateKeyboard" :handleSettings="handleSettings" />
+    <Statistics :bestWPM="bestWPM" :scores="scores" :lastWPM="lastWPM" :lastTenWPM="lastTenWPM" />
 </div>
 </template>
 
@@ -26,6 +29,7 @@ import Paragraph from "./components/Paragraph.vue";
 import Post from "./components/Post.vue";
 import Progress from "./components/Progress.vue";
 import Settings from "./components/Settings.vue";
+import Statistics from "./components/Statistics.vue";
 import Timer from "./components/Timer.vue";
 import Typing from "./components/Typing.vue";
 
@@ -40,6 +44,7 @@ export default {
         Post,
         Progress,
         Settings,
+        Statistics,
         Timer,
         Typing,
     },
@@ -63,9 +68,13 @@ export default {
             settings: false,
             currentTheme: "dark",
             currentKeyboard: "colemak-dh",
+            lastTenWPM: 0,
             mistakes: [],
             wrongCount: 0,
             accuracy: 0,
+            scores: [],
+            bestWPM: 0,
+            lastWPM: 0,
         };
     },
     methods: {
@@ -118,7 +127,7 @@ export default {
             this.postGame = false;
             this.gameStarted = true;
             this.countdown = 5;
-            this.timeLimit = Math.ceil(this.currentText.length * 200);
+            this.timeLimit = Math.ceil(this.currentText.length / 2.5);
             this.currentWord = this.textStack[0];
             this.upcomingWords = this.textStack.slice(1).join(" ");
             const that = this;
@@ -137,6 +146,7 @@ export default {
                 if (that.timeLimit <= 0 || !that.gameActive) {
                     that.gameActive = false;
                     clearInterval(timer);
+                    that.timeLimit += 1;
                 } else {
                     that.timeLimit -= 1;
                     that.timeElapsed += 1;
@@ -163,6 +173,25 @@ export default {
         handleWrong() {
             this.wrongCount++;
         },
+        save() {
+            this.scores.push(this.wpm);
+            if (this.bestWPM < this.wpm) {
+                this.bestWPM = this.wpm;
+            }
+            this.lastWPM = this.wpm;
+            localStorage.setItem("bestWPM", this.bestWPM);
+            localStorage.setItem("scores", JSON.stringify(this.scores));
+            localStorage.setItem("lastWPM", this.lastWPM);
+        },
+        lastTen() {
+            if (this.scores.length >= 10) {
+                let lastTenScores = this.scores.slice(-10);
+                this.lastTenWPM = lastTenScores.reduce((a, b) => a + b) / 10;
+            } else {
+                this.lastTenWPM =
+                    this.scores.reduce((a, b) => a + b) / this.scores.length;
+            }
+        },
     },
 
     watch: {
@@ -176,6 +205,7 @@ export default {
                     this.upcomingWords = this.textStack.slice(1).join(" ");
                     if (this.textStack.length <= 0) {
                         this.gameActive = false;
+                        this.save();
                     }
                 }
             },
@@ -238,6 +268,13 @@ export default {
             htmlElement.setAttribute("theme", "light");
             this.currentTheme = "light";
         }
+        let _bestWPM = localStorage.getItem("bestWPM") || 0;
+        let _scores = JSON.parse(localStorage.getItem("scores")) || [];
+        let _lastWPM = localStorage.getItem("lastWPM") || 0;
+        this.bestWPM = _bestWPM;
+        this.scores = _scores;
+        this.lastWPM = _lastWPM;
+        this.lastTen();
     },
 };
 </script>
