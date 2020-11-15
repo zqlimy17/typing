@@ -6,11 +6,14 @@
     <Progress :doneWords="doneWords" :currentText="currentText" :currentTheme="currentTheme" />
     <div v-bind:class="{
                 wrong: currentChar === 'keyboard_backspace',
-                hidden: gameActive === false && gameStarted === false,
+                hidden:
+                    (gameActive === false && gameStarted === false) ||
+                    postGame === true,
             }">
         <Typing :gameActive="gameActive" :textStack="textStack" @inputchange="userInput = $event" />
         <Keyboard :currentChar="currentChar" :currentKeyboard="currentKeyboard" />
     </div>
+    <Post v-if="postGame" :wpm="wpm" />
     <Menu :newGame="newGame" :retry="retry" :handleSettings="handleSettings" :gameStarted="gameStarted" :postGame="postGame" :wpm="wpm" :gameActive="gameActive" />
     <Settings :settings="settings" :currentTheme="currentTheme" :currentKeyboard="currentKeyboard" :updateTheme="updateTheme" :updateKeyboard="updateKeyboard" :handleSettings="handleSettings" />
 </div>
@@ -20,6 +23,7 @@
 import Keyboard from "./components/Keyboard.vue";
 import Menu from "./components/Menu.vue";
 import Paragraph from "./components/Paragraph.vue";
+import Post from "./components/Post.vue";
 import Progress from "./components/Progress.vue";
 import Settings from "./components/Settings.vue";
 import Timer from "./components/Timer.vue";
@@ -33,6 +37,7 @@ export default {
         Keyboard,
         Menu,
         Paragraph,
+        Post,
         Progress,
         Settings,
         Timer,
@@ -71,6 +76,7 @@ export default {
             this.timeElapsed = 0;
             this.wpm = 0;
             this.gameActive = false;
+            this.postGame = false;
             this.gameStarted = false;
             this.doneWords = "";
             this.currentWord = "";
@@ -85,7 +91,7 @@ export default {
             this.timeElapsed = 0;
             this.wpm = 0;
             this.gameActive = false;
-            this.gameStarted = false;
+            this.postGame = false;
             this.doneWords = "";
             this.currentWord = "";
             this.upcomingWords = "";
@@ -106,7 +112,7 @@ export default {
             this.postGame = false;
             this.gameStarted = true;
             this.countdown = 5;
-            this.timeLimit = Math.ceil(this.currentText.length / 2.5);
+            this.timeLimit = Math.ceil(this.currentText.length / 200);
             this.currentWord = this.textStack[0];
             this.upcomingWords = this.textStack.slice(1).join(" ");
             const that = this;
@@ -123,18 +129,11 @@ export default {
             const that = this;
             let timer = setInterval(function () {
                 if (that.timeLimit <= 0 || !that.gameActive) {
-                    clearInterval(timer);
-                    that.postGame = true;
                     that.gameActive = false;
-                    that.gameStarted = false;
-                }
-                that.timeLimit -= 1;
-                that.timeElapsed += 1;
-                if (that.timeLimit <= 0 || !that.gameActive) {
                     clearInterval(timer);
-                    that.postGame = true;
-                    that.gameActive = false;
-                    that.gameStarted = false;
+                } else {
+                    that.timeLimit -= 1;
+                    that.timeElapsed += 1;
                 }
             }, 1000);
         },
@@ -169,6 +168,12 @@ export default {
         },
         gameActive() {
             if (this.gameActive === false) this.timeLimit = 0;
+            if (this.timeLimit === 0 && this.gameActive === false) {
+                this.postGame = true;
+                console.log("GAME ACTIVE", this.gameActive);
+                console.log("GAME STARTED", this.gameStarted);
+                console.log("POSTGAME", this.postGame);
+            }
         },
         doneWords() {
             this.wpm = Math.ceil(
@@ -184,6 +189,9 @@ export default {
                 localStorage.setItem("theme", "light");
                 htmlElement.setAttribute("theme", "light");
             }
+        },
+        gameStarted() {
+            if (this.gameStarted) this.postGame = false;
         },
     },
     mounted() {
