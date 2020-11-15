@@ -134,7 +134,7 @@ export default {
 }
 
 ._danger {
-    background: lightcoral;
+    background-color: rgba(255, 0, 0, 0.4);
 }
 
 ._current {

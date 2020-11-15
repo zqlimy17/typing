@@ -1,10 +1,10 @@
 <template>
 <div class="menu">
     <div class="post" v-if="gameActive && gameStarted">
-        <button class="options" v-on:click="retry">RETRY</button>
+        <button class="options" v-on:click="retry">RESTART</button>
     </div>
     <div class="ongoing" v-if="!gameActive && postGame">
-        <button class="options" v-on:click="retry">RESTART</button>
+        <button class="options" v-on:click="retry">RETRY</button>
     </div>
     <div v-if="!gameStarted || postGame">
         <button v-on:click="newGame" class="options">

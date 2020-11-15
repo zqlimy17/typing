@@ -95,7 +95,7 @@ export default {
     overflow: hidden;
     position: relative;
     height: 100%;
-    background: grey;
+    background: var(--d-bg);
     border-radius: inherit;
 }
 
@@ -144,7 +144,7 @@ export default {
 ._numbers-path {
     fill: none;
     stroke-width: 10px;
-    stroke: var(--d-bg);
+    stroke: var(--d-font);
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: 0, 518.055065155;
@@ -166,7 +166,7 @@ export default {
     text-align: center;
     line-height: 140px;
     font-size: 100px;
-    color: var(--d-bg);
+    color: var(--d-font);
     transform: translateX(10px);
 }
 

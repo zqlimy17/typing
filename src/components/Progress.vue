@@ -1,29 +1,21 @@
 <template>
-    <div class="progress-bar">
-        <div class="progress" :style="`width: ${progress()}%`">
-            <img
-                src="../assets/duck0.png"
-                v-if="duck % 3 === 0"
-                :class="{ invert: currentTheme === 'dark' }"
-            />
-            <img
-                src="../assets/duck1.png"
-                v-else-if="duck % 3 === 1"
-                :class="{ invert: currentTheme === 'dark' }"
-            />
-            <img
-                src="../assets/duck2.png"
-                v-else-if="duck % 3 === 2"
-                :class="{ invert: currentTheme === 'dark' }"
-            />
-            <img
-                src="../assets/duck0.png"
-                v-else
-                style="float: right"
-                :class="{ invert: currentTheme === 'dark' }"
-            />
-        </div>
+<div class="progress-bar">
+    <div class="progress" :style="`width: ${progress()}%`">
+        <img src="../assets/duck0.png" v-if="duck % 3 === 0" :class="{
+                    invert: currentTheme === 'dark',
+                    sepia: currentTheme === 'sepia',
+                }" />
+        <img src="../assets/duck1.png" v-else-if="duck % 3 === 1" :class="{
+                    invert: currentTheme === 'dark',
+                    sepia: currentTheme === 'sepia',
+                }" />
+        <img src="../assets/duck2.png" v-else-if="duck % 3 === 2" :class="{ invert: currentTheme === 'dark' }" />
+        <img src="../assets/duck0.png" v-else style="float: right" :class="{
+                    invert: currentTheme === 'dark',
+                    sepia: currentTheme === 'sepia',
+                }" />
     </div>
+</div>
 </template>
 
 <script>
@@ -78,5 +70,9 @@ img {
 
 .invert {
     filter: invert(100%);
+}
+
+.sepia {
+    opacity: 0.5;
 }
 </style>

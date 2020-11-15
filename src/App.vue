@@ -196,6 +196,15 @@ export default {
             if (this.currentTheme === "dark") {
                 localStorage.setItem("theme", "dark");
                 htmlElement.setAttribute("theme", "dark");
+            } else if (this.currentTheme === "sepia") {
+                localStorage.setItem("theme", "sepia");
+                htmlElement.setAttribute("theme", "sepia");
+            } else if (this.currentTheme === "ocean") {
+                localStorage.setItem("theme", "ocean");
+                htmlElement.setAttribute("theme", "ocean");
+            } else if (this.currentTheme === "forest") {
+                localStorage.setItem("theme", "forest");
+                htmlElement.setAttribute("theme", "forest");
             } else {
                 localStorage.setItem("theme", "light");
                 htmlElement.setAttribute("theme", "light");
@@ -216,6 +225,15 @@ export default {
         if (_theme === "dark") {
             htmlElement.setAttribute("theme", "dark");
             this.currentTheme = "dark";
+        } else if (_theme === "sepia") {
+            htmlElement.setAttribute("theme", "sepia");
+            this.currentTheme = "sepia";
+        } else if (_theme === "ocean") {
+            htmlElement.setAttribute("theme", "ocean");
+            this.currentTheme = "ocean";
+        } else if (_theme === "forest") {
+            htmlElement.setAttribute("theme", "forest");
+            this.currentTheme = "forest";
         } else {
             htmlElement.setAttribute("theme", "light");
             this.currentTheme = "light";
@@ -226,11 +244,12 @@ export default {
 
 <style>
 :root {
-    --d-bg: ghostwhite;
+    --d-bg: whitesmoke;
     --d-font: black;
     --d-border: black;
     --d-light: greenyellow;
     --d-success: green;
+    --d-placeholder: #7881a1;
 }
 
 [theme="dark"] {
@@ -239,6 +258,34 @@ export default {
     --d-border: white;
     --d-light: green;
     --d-success: greenyellow;
+    --d-placeholder: #7881a1;
+}
+
+[theme="sepia"] {
+    --d-bg: #704214;
+    --d-font: #d4b595;
+    --d-border: #eadbcb;
+    --d-light: green;
+    --d-success: greenyellow;
+    --d-placeholder: darkgrey;
+}
+
+[theme="ocean"] {
+    --d-bg: #002535;
+    --d-font: #bfd2d9;
+    --d-border: #3b89ac;
+    --d-light: green;
+    --d-success: greenyellow;
+    --d-placeholder: #22646e;
+}
+
+[theme="forest"] {
+    --d-bg: #5c6b24;
+    --d-font: #e7e8a6;
+    --d-border: #cdcd8e;
+    --d-light: green;
+    --d-success: greenyellow;
+    --d-placeholder: #a8b59e;
 }
 
 *,
@@ -267,7 +314,7 @@ export default {
 }
 
 .wrong .input {
-    background-color: lightcoral;
+    background-color: rgba(255, 0, 0, 0.4);
     border-color: red;
 }
 
