@@ -1,7 +1,14 @@
 <template>
-<div class="input">
-    <input ref="userInput" tabindex="0" type="text" :disabled="!gameActive" :placeholder="textStack[0]" v-model="internalValue" />
-</div>
+    <div class="input">
+        <input
+            ref="userInput"
+            tabindex="0"
+            type="text"
+            :disabled="!gameActive"
+            :placeholder="textStack[0]"
+            v-model="internalValue"
+        />
+    </div>
 </template>
 
 <script>
@@ -34,8 +41,8 @@ export default {
 
 <style>
 .input {
-    background: var(--app-background-color);
-    color: var(--dynamic-font-color);
+    background: var(--d-bg);
+    color: var(--d-font);
     position: relative;
     display: flex;
     flex-direction: row;
@@ -43,7 +50,7 @@ export default {
     margin: 1rem auto;
     border-radius: 2px;
     padding: 1rem;
-    border: 1px solid var(--dynamic-border-color);
+    border: 1px solid var(--d-border);
     border-radius: 4px;
     animation: fadeInTyping ease 1.5s;
 }
@@ -64,7 +71,7 @@ export default {
     display: block;
     margin: 0 auto;
     flex-grow: 1;
-    color: var(--dynamic-font-color);
+    color: var(--d-font);
     font-size: 1.8rem;
     line-height: 2.4rem;
     vertical-align: middle;

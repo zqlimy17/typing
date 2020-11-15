@@ -11,7 +11,7 @@
         <Typing :gameActive="gameActive" :textStack="textStack" @inputchange="userInput = $event" />
         <Keyboard :currentChar="currentChar" :currentKeyboard="currentKeyboard" />
     </div>
-    <Menu :newGame="newGame" :retry="retry" :handleSettings="handleSettings" :gameStarted="gameStarted" :postGame="postGame" :wpm="wpm" />
+    <Menu :newGame="newGame" :retry="retry" :handleSettings="handleSettings" :gameStarted="gameStarted" :postGame="postGame" :wpm="wpm" :gameActive="gameActive" />
     <Settings :settings="settings" :currentTheme="currentTheme" :currentKeyboard="currentKeyboard" :updateTheme="updateTheme" :updateKeyboard="updateKeyboard" :handleSettings="handleSettings" />
 </div>
 </template>
@@ -66,13 +66,29 @@ export default {
                 allText[Math.floor(Math.random() * allText.length)];
         },
         async newGame() {
-            this.reset();
+            this.textStack = [];
+            this.userInput = "";
+            this.timeElapsed = 0;
+            this.wpm = 0;
+            this.gameActive = false;
+            this.gameStarted = false;
+            this.doneWords = "";
+            this.currentWord = "";
+            this.upcomingWords = "";
             await this.newText();
             await this.setTextStack();
             await this.setCountdown();
         },
         async retry() {
-            this.reset();
+            this.textStack = [];
+            this.userInput = "";
+            this.timeElapsed = 0;
+            this.wpm = 0;
+            this.gameActive = false;
+            this.gameStarted = false;
+            this.doneWords = "";
+            this.currentWord = "";
+            this.upcomingWords = "";
             await this.setTextStack();
             await this.setCountdown();
         },
@@ -108,25 +124,21 @@ export default {
             let timer = setInterval(function () {
                 if (that.timeLimit <= 0 || !that.gameActive) {
                     clearInterval(timer);
+                    that.postGame = true;
                     that.gameActive = false;
                     that.gameStarted = false;
-                    that.postGame = true;
                 }
-                that.timeElapsed += 1;
                 that.timeLimit -= 1;
+                that.timeElapsed += 1;
+                if (that.timeLimit <= 0 || !that.gameActive) {
+                    clearInterval(timer);
+                    that.postGame = true;
+                    that.gameActive = false;
+                    that.gameStarted = false;
+                }
             }, 1000);
         },
-        reset() {
-            this.textStack = [];
-            this.userInput = "";
-            this.timeElapsed = 0;
-            this.wpm = 0;
-            this.gameActive = false;
-            this.gameStarted = false;
-            this.doneWords = "";
-            this.currentWord = "";
-            this.upcomingWords = "";
-        },
+
         updateTheme(val) {
             this.currentTheme = val;
         },
@@ -192,17 +204,19 @@ export default {
 
 <style>
 :root {
-    --app-background-color: white;
-    --dynamic-font-color: black;
-    --dynamic-border-color: black;
-    --dynamic-light-color: greenyellow;
+    --d-bg: ghostwhite;
+    --d-font: black;
+    --d-border: black;
+    --d-light: greenyellow;
+    --d-success: green;
 }
 
 [theme="dark"] {
-    --app-background-color: black;
-    --dynamic-font-color: white;
-    --dynamic-border-color: white;
-    --dynamic-light-color: green;
+    --d-bg: #303030;
+    --d-font: white;
+    --d-border: white;
+    --d-light: green;
+    --d-success: greenyellow;
 }
 
 *,
@@ -218,8 +232,8 @@ export default {
     height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: var(--app-background-color);
-    color: var(--dynamic-font-color);
+    background: var(--d-bg);
+    color: var(--d-font);
 }
 
 .text-center {
@@ -237,5 +251,30 @@ export default {
 
 .hidden {
     display: none;
+}
+
+.options {
+    color: var(--d-font);
+    cursor: pointer;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    flex-grow: 1;
+    background: var(--d-bg);
+    height: 45px;
+    margin: 3px;
+    padding: 0 1rem;
+    border-radius: 4px;
+    border: 1px solid var(--d-border);
+    font-size: 1.05rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.options:not(.active):hover {
+    background: gold;
+    color: black;
 }
 </style>

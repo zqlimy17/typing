@@ -1,14 +1,17 @@
 <template>
 <div class="menu">
-    <div class="post">
-        <button class="options" v-on:click="retry">Retry</button>
+    <div class="post" v-if="postGame">
+        <button class="options" v-on:click="retry">RETRY</button>
     </div>
-    <div :class="{ hidden: gameStarted }">
+    <div class="ongoing" v-if="gameActive">
+        <button class="options" v-on:click="retry">RESTART</button>
+    </div>
+    <div v-if="!gameStarted">
         <button v-on:click="newGame" class="options">
-            <i class="material-icons">sports_esports</i> Play
+            <i class="material-icons">sports_esports</i> PLAY
         </button>
         <button v-on:click="handleSettings" class="options">
-            <i class="material-icons">settings</i> Settings
+            <i class="material-icons">settings</i> SETTINGS
         </button>
     </div>
 </div>
@@ -17,35 +20,26 @@
 <script>
 export default {
     name: "Menu",
-    props: ["newGame", "retry", "handleSettings", "gameStarted", "postGame"],
+    props: [
+        "newGame",
+        "retry",
+        "handleSettings",
+        "gameStarted",
+        "postGame",
+        "gameActive",
+    ],
 };
 </script>
 
 <style>
 .menu {
-    width: 60%;
+    width: 30%;
     margin: 0 auto;
     text-align: center;
 }
 
-.options {
-    color: var(--dynamic-font-color);
-    cursor: pointer;
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    flex-grow: 1;
-    background: var(--app-background-color);
-    height: 45px;
-    margin: 3px;
-    padding: 0 1rem;
-    border-radius: 4px;
-    border: 1px solid var(--dynamic-border-color);
-    font-size: 1.05rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    vertical-align: middle;
-    position: relative;
-    margin-bottom: 1rem;
+.menu .options {
+    width: 100%;
 }
 
 .hidden {

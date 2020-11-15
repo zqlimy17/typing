@@ -85,6 +85,7 @@ export default {
             } else if (this.userInput.length > toCompare.length) {
                 this.wrongDone = this.wrongDone.concat(" ");
                 this.wrongInput = true;
+                this.emitChar("keyboard_backspace");
             } else {
                 this.emitChar("keyboard_backspace");
 
@@ -110,7 +111,7 @@ export default {
 <style scoped>
 #paragraph {
     max-width: 60%;
-    color: var(--dynamic-font-color);
+    color: var(--d-font);
     margin: 0 auto;
 }
 
@@ -119,7 +120,7 @@ export default {
 }
 
 ._success {
-    color: green;
+    color: greenyellow;
 }
 
 ._danger {
@@ -132,7 +133,7 @@ export default {
 }
 
 ._blinker {
-    box-shadow: 0 0 1px 1px var(--dynamic-font-color);
+    box-shadow: 0 0 1px 1px var(--d-font);
     animation: blink-animation 1s steps(2, start) infinite;
     animation-delay: 2s;
 }

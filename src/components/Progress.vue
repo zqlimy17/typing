@@ -1,12 +1,29 @@
 <template>
-<div class="progress-bar">
-    <div class="progress" :style="`width: ${progress()}%`">
-        <img src="../assets/duck0.png" v-if="duck % 3 === 0" :class="{ invert: currentTheme === 'dark' }" />
-        <img src="../assets/duck1.png" v-else-if="duck % 3 === 1" :class="{ invert: currentTheme === 'dark' }" />
-        <img src="../assets/duck2.png" v-else-if="duck % 3 === 2" :class="{ invert: currentTheme === 'dark' }" />
-        <img src="../assets/duck0.png" v-else style="float: right" :class="{ invert: currentTheme === 'dark' }" />
+    <div class="progress-bar">
+        <div class="progress" :style="`width: ${progress()}%`">
+            <img
+                src="../assets/duck0.png"
+                v-if="duck % 3 === 0"
+                :class="{ invert: currentTheme === 'dark' }"
+            />
+            <img
+                src="../assets/duck1.png"
+                v-else-if="duck % 3 === 1"
+                :class="{ invert: currentTheme === 'dark' }"
+            />
+            <img
+                src="../assets/duck2.png"
+                v-else-if="duck % 3 === 2"
+                :class="{ invert: currentTheme === 'dark' }"
+            />
+            <img
+                src="../assets/duck0.png"
+                v-else
+                style="float: right"
+                :class="{ invert: currentTheme === 'dark' }"
+            />
+        </div>
     </div>
-</div>
 </template>
 
 <script>
@@ -38,10 +55,10 @@ export default {
 
 <style scoped>
 .progress-bar {
-    background: var(--app-background-color);
+    background: var(--d-bg);
     margin-right: 50px;
     margin: 0 auto;
-    color: var(--dynamic-font-color);
+    color: var(--d-font);
 
     max-width: 60%;
 }
@@ -49,7 +66,7 @@ export default {
 .progress {
     margin: 2rem 0;
     height: 2px;
-    border: solid 1px var(--dynamic-border-color);
+    border: solid 1px var(--d-border);
 }
 
 img {

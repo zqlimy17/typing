@@ -94,7 +94,7 @@ export default {
     overflow: hidden;
     position: relative;
     height: 100%;
-    background: steelblue;
+    background: var(--d-font);
     border-radius: inherit;
 }
 
@@ -119,7 +119,7 @@ export default {
 
 ._colored-block:nth-child(3) {
     transform: rotate(240deg) skewX(-30deg);
-    background-color: orange;
+    background-color: gold;
 }
 
 ._inner {
@@ -143,7 +143,7 @@ export default {
 ._numbers-path {
     fill: none;
     stroke-width: 10px;
-    stroke: white;
+    stroke: var(--d-bg);
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: 0, 518.055065155;
@@ -165,7 +165,7 @@ export default {
     text-align: center;
     line-height: 140px;
     font-size: 100px;
-    color: white;
+    color: var(--d-bg);
     transform: translateX(10px);
 }
 
