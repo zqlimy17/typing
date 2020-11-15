@@ -22,6 +22,7 @@ export default {
         "userInput",
         "mistakes",
         "handleMistake",
+        "handleWrong",
     ],
     data() {
         return {
@@ -75,6 +76,12 @@ export default {
                 this.userInput.length <
                 this.done.length + this.wrongDone.length
             ) {
+                if (
+                    this.wrongDone.length === 1 ||
+                    this.userInput.length === toCompare.length
+                ) {
+                    this.wrongInput = false;
+                }
                 this.upcoming = this.word.substr(toCompare.length);
                 this.emitChar("keyboard_backspace");
 
@@ -87,8 +94,10 @@ export default {
                 this.wrongInput = true;
                 this.handleMistake();
                 this.emitChar("keyboard_backspace");
+                this.handleWrong();
             } else {
                 this.emitChar("keyboard_backspace");
+                if (this.wrongDone.length === 0) this.handleWrong();
                 this.handleMistake();
                 let nextLetter = this.upcoming[0];
                 if (nextLetter !== undefined) {

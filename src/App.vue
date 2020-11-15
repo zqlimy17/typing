@@ -2,7 +2,7 @@
 <div>
     <h1 class="text-center p-3">Typing</h1>
     <Timer :countdown="countdown" :timeLimit="timeLimit" :wpm="wpm" />
-    <Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" @char="currentChar = $event" :handleMistake="handleMistake" :mistakes="mistakes" />
+    <Paragraph :doneWords="doneWords" :currentWord="currentWord" :upcomingWords="upcomingWords" :userInput="userInput" @char="currentChar = $event" :handleMistake="handleMistake" :mistakes="mistakes" :handleWrong="handleWrong" />
     <Progress :doneWords="doneWords" :currentText="currentText" :currentTheme="currentTheme" />
     <div v-bind:class="{
                 wrong: currentChar === 'keyboard_backspace',
@@ -13,7 +13,7 @@
         <Typing :gameActive="gameActive" :textStack="textStack" @inputchange="userInput = $event" />
         <Keyboard :currentChar="currentChar" :currentKeyboard="currentKeyboard" />
     </div>
-    <Post v-if="postGame" :wpm="wpm" :mistakes="mistakes" />
+    <Post v-if="postGame" :wpm="wpm" :mistakes="mistakes" :accuracy="accuracy" />
     <Menu :newGame="newGame" :retry="retry" :handleSettings="handleSettings" :gameStarted="gameStarted" :postGame="postGame" :wpm="wpm" :gameActive="gameActive" />
     <Settings :settings="settings" :currentTheme="currentTheme" :currentKeyboard="currentKeyboard" :updateTheme="updateTheme" :updateKeyboard="updateKeyboard" :handleSettings="handleSettings" />
 </div>
@@ -64,6 +64,8 @@ export default {
             currentTheme: "dark",
             currentKeyboard: "colemak-dh",
             mistakes: [],
+            wrongCount: 0,
+            accuracy: 0,
         };
     },
     methods: {
@@ -76,6 +78,8 @@ export default {
             this.userInput = "";
             this.timeElapsed = 0;
             this.wpm = 0;
+            this.wrongCount = 0;
+            this.accuracy = 0;
             this.gameActive = false;
             this.postGame = false;
             this.gameStarted = false;
@@ -91,6 +95,8 @@ export default {
             this.userInput = "";
             this.timeElapsed = 0;
             this.wpm = 0;
+            this.wrongCount = 0;
+            this.accuracy = 0;
             this.gameActive = false;
             this.postGame = false;
             this.doneWords = "";
@@ -154,6 +160,9 @@ export default {
                 this.mistakes.push(this.currentWord);
             }
         },
+        handleWrong() {
+            this.wrongCount++;
+        },
     },
 
     watch: {
@@ -194,6 +203,9 @@ export default {
         },
         gameStarted() {
             if (this.gameStarted) this.postGame = false;
+        },
+        wrongCount() {
+            this.accuracy = 1 - this.wrongCount / this.currentText.length;
         },
     },
     mounted() {
