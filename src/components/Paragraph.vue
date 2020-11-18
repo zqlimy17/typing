@@ -18,6 +18,7 @@
 export default {
   name: "Paragraph",
   props: [
+    "gameStarted",
     "doneWords",
     "currentWord",
     "upcomingWords",
@@ -41,6 +42,9 @@ export default {
     };
   },
   watch: {
+    gameStarted() {
+      this.shiftText();
+    },
     currentWord() {
       if (this.currentWord) {
         if (this.currentWord[this.currentWord.length - 1] === " ") {
@@ -109,22 +113,25 @@ export default {
         this.upcoming = "";
       }
       if (this.currentLayout === "running") {
-        let correct = await document.querySelector("#correct").offsetWidth;
-        let currentCorrect = await document.querySelector("#currentCorrect")
-          .offsetWidth;
-        let currentWrong = await document.querySelector("#currentWrong")
-          .offsetWidth;
-        document.querySelector("#correct").style.marginLeft = `${-(
-          correct +
-          currentCorrect +
-          currentWrong
-        )}px`;
+        this.shiftText();
       }
     },
   },
   methods: {
     emitChar(v) {
       this.$emit("char", v);
+    },
+    async shiftText() {
+      let correct = await document.querySelector("#correct").offsetWidth;
+      let currentCorrect = await document.querySelector("#currentCorrect")
+        .offsetWidth;
+      let currentWrong = await document.querySelector("#currentWrong")
+        .offsetWidth;
+      document.querySelector("#correct").style.marginLeft = `${-(
+        correct +
+        currentCorrect +
+        currentWrong
+      )}px`;
     },
   },
 };

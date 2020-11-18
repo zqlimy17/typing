@@ -12,6 +12,7 @@
       :mistakes="mistakes"
       :handleWrong="handleWrong"
       :currentLayout="currentLayout"
+      :gameStarted="gameStarted"
     />
     <Progress
       :doneWords="doneWords"
