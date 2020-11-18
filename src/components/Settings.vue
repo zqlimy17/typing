@@ -3,6 +3,12 @@
     <div class="inner">
         <h2>Settings</h2>
         <div class="sub">
+            <h3>Text</h3>
+        </div>
+        <div class="options" v-for="layout in text" :key="layout.index" :class="{ active: layout === currentLayout }" v-on:click="updateLayout(layout)">
+            {{ layout.toUpperCase() }}
+        </div>
+        <div class="sub">
             <h3>Theme</h3>
         </div>
         <div class="options" v-for="theme in themes" :key="theme.index" :class="{ active: theme === currentTheme }" v-on:click="updateTheme(theme)">
@@ -44,6 +50,8 @@ export default {
     name: "Settings",
     props: [
         "settings",
+        "currentLayout",
+        "updateLayout",
         "currentTheme",
         "currentKeyboard",
         "updateTheme",
@@ -55,6 +63,7 @@ export default {
         return {
             keyboards: ["qwerty", "colemak", "colemak-dh", "workman", "dvorak"],
             themes: ["light", "dark", "sepia", "ocean", "forest"],
+            text: ["paragraph", "running"],
             confirmClear: false,
         };
     },

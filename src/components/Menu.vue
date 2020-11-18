@@ -13,8 +13,8 @@
                 RETRY THIS TEXT
             </button>
         </div>
-        <button v-on:click="handleSettings" class="options">
-            <i class="material-icons">settings</i> SETTINGS
+        <button v-on:click="handleSettings" class="settings-button">
+            <i class="material-icons">settings</i> 
         </button>
     </div>
 </div>
@@ -43,6 +43,21 @@ export default {
 
 .menu .options {
     width: 100%;
+}
+
+.settings-button {
+    color: var(--d-font);
+    cursor: pointer;
+    background: var(--d-bg);
+    border: none;
+    font-size: 1.05rem;;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 2rem;
+}
+.settings-button:not(.active):hover {
+    color: gold;
 }
 
 .hidden {
