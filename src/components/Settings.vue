@@ -1,48 +1,79 @@
 <template>
-<div class="settings" v-if="settings">
-    <div class="inner">
-        <h2>Settings</h2>
-        <div class="sub">
-            <h3>Text</h3>
-        </div>
-        <div class="options" v-for="layout in text" :key="layout.index" :class="{ active: layout === currentLayout }" v-on:click="updateLayout(layout)">
-            {{ layout.toUpperCase() }}
-        </div>
-        <div class="sub">
-            <h3>Theme</h3>
-        </div>
-        <div class="options" v-for="theme in themes" :key="theme.index" :class="{ active: theme === currentTheme }" v-on:click="updateTheme(theme)">
-            {{ theme.toUpperCase() }}
-        </div>
-
-        <div class="sub">
-            <h3>Keyboard Layout</h3>
-        </div>
-        <div class="options" v-for="keyboard in keyboards" :key="keyboard.index" :class="{ active: keyboard === currentKeyboard }" v-on:click="updateKeyboard(keyboard)">
-            {{ keyboard.toUpperCase() }}
-        </div>
-        <br />
-        <div class=" options active" style="margin: 2rem 0 5rem 0; width: 40%; background-color: gold; color: black" v-on:click="handleSettings()">
-            Save
-        </div>
-
-        <p>
-            This site uses your browser's local storage to store your
-            scores.
-        </p>
-        <div class="options clear" style="width: 40%" v-on:click="open">
-            CLEAR DATA
-        </div>
-    </div>
-    <div v-if="confirmClear" class="confirm">
+    <div class="settings" v-if="settings">
         <div class="inner">
-            <div class="options w-100" v-on:click="close()">BACK</div>
-            <div class="options w-100" id="final_confirm" v-on:click="clear()">
-                CONFIRM
+            <h2>Settings</h2>
+            <div class="sub">
+                <h3>Text</h3>
+            </div>
+            <div
+                class="options"
+                v-for="layout in text"
+                :key="layout.index"
+                :class="{ active: layout === currentLayout }"
+                v-on:click="updateLayout(layout)"
+            >
+                {{ layout.toUpperCase() }}
+            </div>
+            <div class="sub">
+                <h3>Theme</h3>
+            </div>
+            <div
+                class="options"
+                v-for="theme in themes"
+                :key="theme.index"
+                :class="{ active: theme === currentTheme }"
+                v-on:click="updateTheme(theme)"
+            >
+                {{ theme.toUpperCase() }}
+            </div>
+
+            <div class="sub">
+                <h3>Keyboard Layout</h3>
+            </div>
+            <div
+                class="options"
+                v-for="keyboard in keyboards"
+                :key="keyboard.index"
+                :class="{ active: keyboard === currentKeyboard }"
+                v-on:click="updateKeyboard(keyboard)"
+            >
+                {{ keyboard.toUpperCase() }}
+            </div>
+            <br />
+            <div
+                class="options active"
+                style="
+                    margin: 2rem 0 5rem 0;
+                    width: 40%;
+                    background-color: gold;
+                    color: black;
+                "
+                v-on:click="handleSettings()"
+            >
+                Save
+            </div>
+
+            <p>
+                This site uses your browser's local storage to store your
+                scores.
+            </p>
+            <div class="options clear" style="width: 40%" v-on:click="open">
+                CLEAR DATA
+            </div>
+        </div>
+        <div v-if="confirmClear" class="confirm">
+            <div class="inner">
+                <div class="options w-100" v-on:click="close()">BACK</div>
+                <div
+                    class="options w-100"
+                    id="final_confirm"
+                    v-on:click="clear()"
+                >
+                    CONFIRM
+                </div>
             </div>
         </div>
     </div>
-</div>
 </template>
 
 <script>

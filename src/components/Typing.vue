@@ -1,7 +1,14 @@
 <template>
-<div class="input">
-    <input ref="userInput" tabindex="0" type="text" :disabled="!gameActive" :placeholder="textStack[0]" v-model="internalValue" />
-</div>
+    <div class="input">
+        <input
+            ref="userInput"
+            tabindex="0"
+            type="text"
+            :disabled="!gameActive"
+            :placeholder="textStack[0]"
+            v-model="internalValue"
+        />
+    </div>
 </template>
 
 <script>

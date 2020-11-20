@@ -1,12 +1,12 @@
 <template>
-<div class="post">
-    <h2 class="title">{{ wpm }} WPM</h2>
-    <h2 class="title">{{ (accuracy * 100).toFixed(2) }}% Accuracy</h2>
-    <h2 class="title underline">Mistakes</h2>
-    <div class="mistake" v-for="word in mistakes" :key="word.index">
-        <p>{{ word }}</p>
+    <div class="post">
+        <h2 class="title">{{ wpm }} WPM</h2>
+        <h2 class="title">{{ (accuracy * 100).toFixed(2) }}% Accuracy</h2>
+        <h2 class="title underline">Mistakes</h2>
+        <div class="mistake" v-for="word in mistakes" :key="word.index">
+            <p>{{ word }}</p>
+        </div>
     </div>
-</div>
 </template>
 
 <script>
