@@ -6,25 +6,23 @@
 
       <div class="keyboard__keys">
 
-        <div v-for="elem in numberRow" :key="elem">
+        <div
+          v-for="elem in numberRow"
+          :key="elem"
+          class="keyboard__key"
+          v-bind:class="{
+            'keyboard__key--wide': wide.includes(elem),
+            light: char === elem,
+          }"
+        >
 
-          <div
-            class="keyboard__key"
-            v-bind:class="{
-              'keyboard__key--wide': wide.includes(elem),
-              light: char === elem,
-            }"
-          >
+          <span v-if="icons.includes(elem)">
 
-            <span v-if="icons.includes(elem)">
+            <i class="material-icons">{{ elem }}</i>
 
-              <i class="material-icons">{{ elem }}</i>
+          </span>
 
-            </span>
-
-            <span v-else v-bind:class="{ up: shift }"> {{ elem }} </span>
-
-          </div>
+          <span v-else v-bind:class="{ up: shift }"> {{ elem }} </span>
 
         </div>
 
@@ -32,25 +30,23 @@
 
       <div class="keyboard__keys">
 
-        <div v-for="elem in topRow" :key="elem">
+        <div
+          v-for="elem in topRow"
+          :key="elem"
+          class="keyboard__key"
+          v-bind:class="{
+            'keyboard__key--wide': wide.includes(elem),
+            light: char === elem || ((elem === 'left-shift' || elem === 'right-shift') && shift),
+          }"
+        >
 
-          <div
-            class="keyboard__key"
-            v-bind:class="{
-              'keyboard__key--wide': wide.includes(elem),
-              light: char === elem || ((elem === 'left-shift' || elem === 'right-shift') && shift),
-            }"
-          >
+          <span v-if="icons.includes(elem)">
 
-            <span v-if="icons.includes(elem)">
+            <i class="material-icons">{{ elem }}</i>
 
-              <i class="material-icons">{{ elem }}</i>
+          </span>
 
-            </span>
-
-            <span v-else v-bind:class="{ up: shift }"> {{ elem }} </span>
-
-          </div>
+          <span v-else v-bind:class="{ up: shift }"> {{ elem }} </span>
 
         </div>
 
@@ -58,31 +54,29 @@
 
       <div class="keyboard__keys">
 
-        <div v-for="elem in homeRow" :key="elem">
+        <div
+          v-for="elem in homeRow"
+          :key="elem"
+          class="keyboard__key"
+          v-bind:class="{
+            'keyboard__key--wide': wide.includes(elem),
+            light: char === elem || ((elem === 'left-shift' || elem === 'right-shift') && shift),
+          }"
+        >
 
-          <div
-            class="keyboard__key"
-            v-bind:class="{
-              'keyboard__key--wide': wide.includes(elem),
-              light: char === elem || ((elem === 'left-shift' || elem === 'right-shift') && shift),
-            }"
-          >
+          <span v-if="elem === 'left-shift' || elem === 'right-shift'">
 
-            <span v-if="elem === 'left-shift' || elem === 'right-shift'">
+            <i class="material-icons">keyboard_arrow_up</i>
 
-              <i class="material-icons">keyboard_arrow_up</i>
+          </span>
 
-            </span>
+          <span v-else-if="icons.includes(elem)">
 
-            <span v-else-if="icons.includes(elem)">
+            <i class="material-icons">{{ elem }}</i>
 
-              <i class="material-icons">{{ elem }}</i>
+          </span>
 
-            </span>
-
-            <span v-else v-bind:class="{ up: shift }"> {{ elem }} </span>
-
-          </div>
+          <span v-else v-bind:class="{ up: shift }"> {{ elem }} </span>
 
         </div>
 
@@ -90,33 +84,31 @@
 
       <div class="keyboard__keys">
 
-        <div v-for="elem in bottomRow" :key="elem">
+        <div
+          v-for="elem in bottomRow"
+          :key="elem"
+          class="keyboard__key"
+          v-bind:class="{
+            'keyboard__key--wide': wide.includes(elem),
+            light: char === elem || ((elem === 'left-shift' || elem === 'right-shift') && shift),
+          }"
+        >
 
-          <div
-            class="keyboard__key"
-            v-bind:class="{
-              'keyboard__key--wide': wide.includes(elem),
-              light: char === elem || ((elem === 'left-shift' || elem === 'right-shift') && shift),
-            }"
-          >
+          <span v-if="elem === 'left-shift' || elem === 'right-shift'">
 
-            <span v-if="elem === 'left-shift' || elem === 'right-shift'">
+            <i class="material-icons">keyboard_arrow_up</i>
 
-              <i class="material-icons">keyboard_arrow_up</i>
+          </span>
 
-            </span>
+          <span v-else-if="elem === 'space'"> </span>
 
-            <span v-else-if="elem === 'space'"> </span>
+          <span v-else-if="icons.includes(elem)">
 
-            <span v-else-if="icons.includes(elem)">
+            <i class="material-icons">{{ elem }}</i>
 
-              <i class="material-icons">{{ elem }}</i>
+          </span>
 
-            </span>
-
-            <span v-else v-bind:class="{ up: shift }"> {{ elem }} </span>
-
-          </div>
+          <span v-else v-bind:class="{ up: shift }"> {{ elem }} </span>
 
         </div>
 
